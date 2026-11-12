@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>EVIDEX BYPASS — Advanced Mobile Acquisition</title>
+<style>
+:root {
+  --bg:          #0c1829;
+  --bg2:         #0f2035;
+  --card:        #162744;
+  --card2:       #1c3050;
+  --border:      #1e3a5a;
+  --blue:        #3b82f6;
+  --blue-dim:    #1d4ed8;
+  --blue-glow:   rgba(59,130,246,0.18);
+  --amber:       #f59e0b;
+  --amber-dim:   #d97706;
+  --amber-glow:  rgba(245,158,11,0.18);
+  --green:       #22c55e;
+  --red:         #ef4444;
+  --yellow:      #eab308;
+  --txt:         #f8fafc;
+  --txt2:        #94a3b8;
+  --txt3:        #64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+/* ── HEADER ── */
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:16px;height:56px;position:sticky;top:0;z-index:100}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--amber));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;letter-spacing:-1px;flex-shrink:0}
+.logo-text{font-size:15px;font-weight:700;color:var(--txt);letter-spacing:.5px}
+.logo-sub{font-size:11px;color:var(--txt2);margin-top:1px}
+.divider-v{width:1px;height:28px;background:var(--border);margin:0 8px}
+.header-title{font-size:14px;color:var(--txt2)}
+.header-title span{color:var(--amber);font-weight:600}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.badge{background:var(--amber-glow);border:1px solid var(--amber-dim);color:var(--amber);font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.5px}
+.badge.ok{background:rgba(34,197,94,.12);border-color:#166534;color:var(--green)}
+.mode-toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.mode-btn{padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--txt2);transition:.15s;letter-spacing:.4px}
+.mode-btn.active{background:var(--blue);color:#fff}
+.mode-btn.active.real{background:var(--amber);color:#000}
+.api-status{font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--txt3)}
+.api-status.online{background:rgba(34,197,94,.12);border-color:#166534;color:var(--green)}
+.api-status.offline{background:rgba(239,68,68,.1);border-color:#991b1b;color:var(--red)}
+.real-panel{background:var(--card2);border:1px solid var(--amber-dim);border-radius:8px;padding:12px 14px;margin-bottom:12px}
+.real-panel h4{font-size:12px;color:var(--amber);margin-bottom:8px;font-weight:600}
+.dev-item{display:flex;align-items:center;gap:10px;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:6px;transition:.15s}
+.dev-item:hover{border-color:var(--blue)}
+.dev-item.selected{border-color:var(--blue);background:var(--blue-glow)}
+.dev-serial{font-family:monospace;font-size:11px;color:var(--blue)}
+.dev-model{font-size:12px;color:var(--txt)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.log-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:monospace;font-size:10px;color:var(--txt2);max-height:120px;overflow-y:auto;line-height:1.5;margin-top:8px}
+.log-box .ok{color:var(--green)}
+.log-box .err{color:var(--red)}
+.log-box .info{color:var(--blue)}
+
+/* ── PIPELINE TABS ── */
+.pipeline{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto}
+.ptab{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:2px solid transparent;cursor:pointer;color:var(--txt2);font-size:13px;font-weight:500;white-space:nowrap;transition:.15s}
+.ptab:hover{color:var(--txt)}
+.ptab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.ptab.done{color:var(--green);border-bottom-color:var(--green)}
+.ptab.warn{color:var(--amber);border-bottom-color:var(--amber)}
+.pnum{width:20px;height:20px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.ptab.active .pnum{background:var(--blue);color:#fff}
+.ptab.done .pnum{background:var(--green);color:#fff}
+.ptab.warn .pnum{background:var(--amber);color:#000}
+.arrow{color:var(--border);font-size:16px;padding:12px 2px;align-self:center}
+
+/* ── LAYOUT ── */
+.main{display:grid;grid-template-columns:320px 1fr;gap:16px;padding:20px 24px;min-height:calc(100vh - 112px)}
+.sidebar{display:flex;flex-direction:column;gap:14px}
+.content{display:flex;flex-direction:column;gap:14px}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.card-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:between;gap:8px}
+.card-head h3{font-size:13px;font-weight:600;color:var(--txt);flex:1}
+.card-body{padding:14px 16px}
+.card-body p{font-size:12px;color:var(--txt2);line-height:1.5}
+
+/* ── DEVICE CARD ── */
+.device-info{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.di{background:var(--card2);border-radius:7px;padding:9px 11px}
+.di-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.di-val{font-size:13px;font-weight:600;color:var(--txt)}
+.di-val.blue{color:var(--blue)}
+.di-val.amber{color:var(--amber)}
+.di-val.green{color:var(--green)}
+.di-val.red{color:var(--red)}
+
+/* ── CEILING BADGE ── */
+.ceiling{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.ceiling.fisica{background:rgba(34,197,94,.12);border:1px solid #166534;color:var(--green)}
+.ceiling.fs{background:rgba(234,179,8,.12);border:1px solid #854d0e;color:var(--yellow)}
+.ceiling.logica{background:rgba(245,158,11,.12);border:1px solid var(--amber-dim);color:var(--amber)}
+.ceiling.no{background:rgba(239,68,68,.12);border:1px solid #991b1b;color:var(--red)}
+
+/* ── CVE LIST ── */
+.cve-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.cve-item:last-child{border-bottom:none;padding-bottom:0}
+.cve-badge{flex-shrink:0;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.cve-badge.root{background:rgba(239,68,68,.15);border:1px solid #991b1b;color:var(--red)}
+.cve-badge.datos{background:rgba(59,130,246,.15);border:1px solid #1d4ed8;color:var(--blue)}
+.cve-badge.med{background:rgba(234,179,8,.15);border:1px solid #854d0e;color:var(--yellow)}
+.cve-info{flex:1;min-width:0}
+.cve-id{font-size:12px;font-weight:600;color:var(--txt)}
+.cve-name{font-size:11px;color:var(--txt2);margin-top:2px}
+.cve-rel{font-size:10px;padding:1px 7px;border-radius:4px;margin-left:6px}
+.cve-rel.alta{background:rgba(239,68,68,.1);color:var(--red)}
+.cve-rel.muy-alta{background:rgba(239,68,68,.2);color:var(--red);font-weight:700}
+.cve-rel.media{background:rgba(234,179,8,.1);color:var(--yellow)}
+
+/* ── ROUTE STEPS ── */
+.step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none;padding-bottom:0}
+.step-num{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.step-num.obl{background:var(--blue);color:#fff}
+.step-num.opt{background:var(--card2);color:var(--txt2);border:1px solid var(--border)}
+.step-num.pe{background:var(--amber);color:#000}
+.step-content{flex:1}
+.step-type{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.step-action{font-size:12px;color:var(--txt);line-height:1.4}
+.step-warn{font-size:11px;color:var(--amber);margin-top:4px}
+.step-cond{font-size:11px;color:var(--txt2);margin-top:3px}
+
+/* ── KB STATS ── */
+.kb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kb-stat{background:var(--card2);border-radius:7px;padding:10px 12px;text-align:center}
+.kb-num{font-size:22px;font-weight:800;color:var(--blue)}
+.kb-num.amber{color:var(--amber)}
+.kb-num.green{color:var(--green)}
+.kb-label{font-size:10px;color:var(--txt2);margin-top:3px}
+.kb-bar-wrap{margin-top:12px}
+.kb-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.kb-bar-label{font-size:11px;color:var(--txt2);width:72px;flex-shrink:0;text-align:right}
+.kb-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.kb-bar-fill{height:100%;border-radius:4px;transition:.3s}
+.kb-bar-fill.fisica{background:var(--green)}
+.kb-bar-fill.fs{background:var(--yellow)}
+.kb-bar-fill.logica{background:var(--amber)}
+.kb-bar-fill.no{background:var(--red)}
+.kb-bar-count{font-size:11px;color:var(--txt2);width:28px;text-align:right;flex-shrink:0}
+
+/* ── PATCH RISK ── */
+.patch-risk{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card2);border-radius:8px}
+.risk-icon{font-size:22px}
+.risk-label{font-size:12px;font-weight:700}
+.risk-label.critico{color:var(--red)}
+.risk-label.alto{color:var(--amber)}
+.risk-label.medio{color:var(--yellow)}
+.risk-label.bajo{color:var(--green)}
+.risk-sub{font-size:11px;color:var(--txt2);margin-top:2px}
+
+/* ── SIM SELECTOR ── */
+.sim-select{background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;padding:8px 12px;border-radius:7px;width:100%;cursor:pointer;outline:none}
+.sim-select:focus{border-color:var(--blue)}
+.btn{padding:8px 16px;border-radius:7px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.15s}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-dim)}
+.btn-amber{background:var(--amber);color:#000}
+.btn-amber:hover{background:var(--amber-dim)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--txt2)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--txt)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* ── EXTRACT TABLE ── */
+.ex-table{width:100%;border-collapse:collapse;font-size:12px}
+.ex-table th{padding:6px 10px;text-align:left;color:var(--txt3);font-weight:500;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.ex-table td{padding:7px 10px;border-bottom:1px solid rgba(30,58,90,.5)}
+.ex-table tr:last-child td{border-bottom:none}
+.ex-table tr:hover td{background:var(--card2)}
+.ok-dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}
+.err-dot{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(30,58,90,.5);font-size:12px}
+.info-row:last-child{border-bottom:none}
+.info-key{color:var(--txt2)}
+.info-val{color:var(--txt);font-weight:500;text-align:right}
+.info-val.code{font-family:monospace;font-size:11px;color:var(--blue)}
+
+/* ── HASH BOX ── */
+.hash-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:monospace;font-size:11px;color:var(--blue);word-break:break-all;margin-top:8px}
+
+/* ── SECTION LABEL ── */
+.section-label{font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:8px}
+
+/* ── NOTA ── */
+.nota{background:var(--amber-glow);border:1px solid rgba(245,158,11,.3);border-radius:7px;padding:9px 13px;font-size:12px;color:var(--amber);line-height:1.5}
+.nota.blue{background:var(--blue-glow);border-color:rgba(59,130,246,.3);color:#93c5fd}
+.nota.green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:#86efac}
+
+/* ── TAG ── */
+.tag{display:inline-flex;align-items:center;gap:4px;background:var(--card2);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--txt2)}
+
+/* ── PANELS shown/hidden ── */
+.panel{display:none}
+.panel.active{display:contents}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+  .sidebar{order:2}
+  .content{order:1}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo-wrap">
+    <div class="logo-icon">EB</div>
+    <div>
+      <div class="logo-text">EVIDEX BYPASS</div>
+      <div class="logo-sub">Advanced Mobile Acquisition Platform</div>
+    </div>
+  </div>
+  <div class="divider-v"></div>
+  <span class="header-title">v1.0 &nbsp;·&nbsp; <span>Sprint 1</span></span>
+  <div class="header-right">
+    <span class="badge">LABORATORIO</span>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-sim" onclick="setMode('sim')">SIM</button>
+      <button class="mode-btn" id="btn-real" onclick="setMode('real')">REAL</button>
+    </div>
+    <span class="api-status offline" id="api-status">API offline</span>
+    <span class="badge ok" id="kb-badge">KB v2.5 · 152 chipsets · 363 modelos · 56 fab</span>
+  </div>
+</header>
+
+<!-- PIPELINE -->
+<nav class="pipeline" id="pipeline-nav">
+  <div class="ptab done" onclick="showPanel(0)">
+    <div class="pnum">1</div>Device Scanner
+  </div>
+  <span class="arrow">›</span>
+  <div class="ptab done" onclick="showPanel(1)">
+    <div class="pnum">2</div>Security Analyzer
+  </div>
+  <span class="arrow">›</span>
+  <div class="ptab active" onclick="showPanel(2)">
+    <div class="pnum">3</div>PE Engine
+  </div>
+  <span class="arrow">›</span>
+  <div class="ptab" onclick="showPanel(3)">
+    <div class="pnum">4</div>Data Extractor
+  </div>
+  <span class="arrow">›</span>
+  <div class="ptab" onclick="showPanel(4)">
+    <div class="pnum">5</div>Knowledge Base
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Selector de dispositivo -->
+    <div class="card">
+      <div class="card-head"><h3>⚙ Perfil de dispositivo</h3></div>
+      <div class="card-body">
+
+        <!-- Panel modo REAL (oculto por defecto) -->
+        <div id="real-panel" style="display:none">
+          <div class="real-panel">
+            <h4>🔌 Dispositivos ADB conectados</h4>
+            <div id="device-list"><span style="color:var(--txt3);font-size:12px">Escaneando...</span></div>
+            <button class="btn btn-ghost" style="margin-top:8px;font-size:11px" onclick="refreshDevices()">↻ Actualizar</button>
+          </div>
+          <div id="log-panel" style="display:none">
+            <div class="section-label">Progreso</div>
+            <div class="log-box" id="log-box"></div>
+          </div>
+        </div>
+
+        <!-- Panel modo SIM -->
+        <div id="sim-panel">
+        <div class="section-label">Simulación</div>
+        <select class="sim-select" id="sim-select" onchange="updateProfile()">
+          <option value="mt6762">Samsung A10s — MT6762 (Helio P22)</option>
+          <option value="exynos7570">Samsung J4 — Exynos 7570</option>
+          <option value="msm8937">Motorola Moto G5 — SDM430</option>
+          <option value="sdm732">POCO X3 NFC — SDM732G</option>
+          <option value="kirin710">Huawei P Smart 2019 — Kirin 710</option>
+          <option value="mt6739">Noblex X7 — MT6739 (Helio A22)</option>
+          <optgroup label="── Samsung J series ──">
+          <option value="samsung_j5pro">Samsung J5 Pro — Exynos 7870</option>
+          <option value="samsung_j7prime">Samsung J7 Prime — Exynos 7870</option>
+          </optgroup>
+          <optgroup label="── Samsung A series ──">
+          <option value="samsung_a03s">Samsung A03s — MT6765 (Helio G35)</option>
+          <option value="samsung_a50">Samsung A50 — Exynos 9610</option>
+          <option value="samsung_a71">Samsung A71 — SDM730</option>
+          </optgroup>
+          <optgroup label="── Samsung S / Note ──">
+          <option value="samsung_s5">Samsung S5 Snap — MSM8974 (Snap 801)</option>
+          <option value="samsung_s9">Samsung S9 — Exynos 9810</option>
+          </optgroup>
+          <optgroup label="── Advance (Argentina) ──">
+          <option value="advance_l6">Advance L6 — MT6739 (Helio A22)</option>
+          <option value="advance_octoq5">Advance OctoQ5 — MT6762 (Helio P22)</option>
+          </optgroup>
+          <optgroup label="── HTC ──">
+          <option value="htc_m8">HTC One M8 — MSM8974 (Snap 801)</option>
+          <option value="htc_u11">HTC U11 — MSM8998 (Snap 835)</option>
+          </optgroup>
+          <optgroup label="── BlackBerry (TCL) ──">
+          <option value="bb_keyone">BlackBerry KEYone — MSM8953 (Snap 625)</option>
+          <option value="bb_key2">BlackBerry KEY2 — SDM660 (Snap 660)</option>
+          </optgroup>
+          <optgroup label="── POCO ──">
+          <option value="poco_f1">POCO F1 — SDM845 (Snap 845)</option>
+          <option value="poco_f3">POCO F3 — SDM870 (Snap 870)</option>
+          </optgroup>
+          <optgroup label="── Meizu ──">
+          <option value="meizu_m5">Meizu M5 — MT6750 (Helio P10)</option>
+          <option value="meizu_note9">Meizu Note 9 — SDM675 (Snap 675)</option>
+          </optgroup>
+          <optgroup label="── BLU ──">
+          <option value="blu_g80">BLU G80 — MT6762 (Helio P22)</option>
+          </optgroup>
+          <optgroup label="── Hyundai Mobile AR ──">
+          <option value="hyundai_e650">Hyundai E650 — MT6762 (Helio P22)</option>
+          </optgroup>
+          <optgroup label="── Motorola Edge ──">
+          <option value="moto_edge_s">Motorola Edge S — SDM870 (Snap 870)</option>
+          <option value="moto_edge_20">Motorola Edge 20 Lite — MT6779 (P90)</option>
+          </optgroup>
+          <optgroup label="── Transsion (Infinix/Tecno/ITEL) ──">
+          <option value="infinix_hot11">Infinix Hot 11 — MT6762 (Helio P22)</option>
+          <option value="tecno_spark7">Tecno Spark 7 — MT6762 (Helio P22)</option>
+          <option value="itel_p36">ITEL P36 — MT6762 (Helio P22)</option>
+          </optgroup>
+          <optgroup label="── CAT Phones ──">
+          <option value="cat_s62">CAT S62 Pro — SDM660 (Snap 660)</option>
+          </optgroup>
+          <optgroup label="── OnePlus (ampliado) ──">
+          <option value="op_8t">OnePlus 8T — SDM865 (kona)</option>
+          </optgroup>
+          <optgroup label="── Realme (ampliado) ──">
+          <option value="realme_narzo50a">Realme narzo 50A — MT6762 (Helio P22)</option>
+          </optgroup>
+          <optgroup label="── Ringo (Argentina) ──">
+          <option value="ringo_q2">Ringo Q2 — MT6762 (Helio P22)</option>
+          <option value="ringo_q5">Ringo Q5 — MT6765 (Helio G35)</option>
+          </optgroup>
+          <optgroup label="── vivo Y (ampliado) ──">
+          <option value="vivo_y16">vivo Y16 — MT6765 (Helio G35)</option>
+          <option value="vivo_y30">vivo Y30 — MT6765 (Helio G35)</option>
+          </optgroup>
+          <optgroup label="── Philips / TCL ──">
+          <option value="philips_s568">Philips S568 — MT6762 (Helio P22)</option>
+          <option value="tcl_30se">TCL 30 SE — MT6762 (Helio P22)</option>
+          </optgroup>
+          <optgroup label="── Google Pixel ──">
+          <option value="pixel_4a">Google Pixel 4a — SDM730G</option>
+          <option value="pixel_6a">Google Pixel 6a — Tensor G1</option>
+          </optgroup>
+          <optgroup label="── Nothing Phone ──">
+          <option value="nothing_1">Nothing Phone 1 — SDM778G</option>
+          </optgroup>
+          <optgroup label="── Rugged (Blackview/Doogee/Oukitel) ──">
+          <option value="blackview_bv6600">Blackview BV6600 — MT6762</option>
+          <option value="doogee_s58">Doogee S58 Pro — MT6762</option>
+          </optgroup>
+          <optgroup label="── Tablets ──">
+          <option value="tab_a8">Samsung Galaxy Tab A8 — UNISOC T618</option>
+          <option value="xiaomi_pad5">Xiaomi Pad 5 — SDM860</option>
+          <option value="lenovo_m10">Lenovo Tab M10 Plus — MT6765</option>
+          </optgroup>
+        </select>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="updateProfile()">▶ Analizar</button>
+          <button class="btn btn-ghost" onclick="showPanel(0)">Ver sesión</button>
+        </div>
+        </div><!-- /sim-panel -->
+
+        <!-- Botones modo REAL -->
+        <div id="real-buttons" style="display:none" class="btn-row">
+          <button class="btn btn-amber" id="btn-scan-real" onclick="runPipelineReal()" disabled>
+            ▶ Iniciar pipeline
+          </button>
+          <button class="btn btn-ghost" onclick="showPanel(0)">Ver sesión</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Device Profile -->
+    <div class="card" id="device-card">
+      <div class="card-head"><h3>📱 Perfil del dispositivo</h3></div>
+      <div class="card-body">
+        <div class="device-info" id="device-info"></div>
+        <div style="margin-top:12px;text-align:center" id="ceiling-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Parche riesgo -->
+    <div class="card">
+      <div class="card-head"><h3>🛡 Nivel de parche</h3></div>
+      <div class="card-body" id="patch-body"></div>
+    </div>
+
+  </aside>
+
+  <!-- CONTENT PANELS -->
+  <main class="content">
+
+    <!-- Panel 0: Device Scanner -->
+    <div id="panel-0" style="display:none">
+      <div class="card">
+        <div class="card-head"><h3>🔍 Device Scanner — Sesión</h3></div>
+        <div class="card-body">
+          <div class="section-label">Propiedades ADB</div>
+          <div id="adb-props"></div>
+          <div style="margin-top:12px">
+            <div class="section-label">Hash de props (cadena de custodia)</div>
+            <div class="hash-box" id="props-hash"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 1: Security Analyzer -->
+    <div id="panel-1" style="display:none">
+      <div class="card">
+        <div class="card-head"><h3>🔒 Security Analyzer</h3></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px" id="sec-top"></div>
+          <div class="section-label">CVEs N-day aplicables</div>
+          <div id="cve-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: PE Engine (default) -->
+    <div id="panel-2">
+      <div class="card">
+        <div class="card-head"><h3>⚡ Privilege Escalation Engine</h3></div>
+        <div class="card-body">
+          <div class="nota" id="pe-nota" style="margin-bottom:14px"></div>
+          <div class="section-label">CVE seleccionado</div>
+          <div id="pe-cve" style="margin-bottom:14px"></div>
+          <div class="section-label">Ruta de adquisición recomendada</div>
+          <div id="pe-route"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: Data Extractor -->
+    <div id="panel-3" style="display:none">
+      <div class="card">
+        <div class="card-head"><h3>📦 Data Extractor — Manifiesto simulado</h3></div>
+        <div class="card-body">
+          <div id="extract-top" style="margin-bottom:14px"></div>
+          <div class="section-label">Archivos extraídos</div>
+          <table class="ex-table"><thead><tr>
+            <th>App</th><th>Archivo</th><th>Tamaño</th><th>SHA-256</th>
+          </tr></thead><tbody id="extract-table"></tbody></table>
+          <div style="margin-top:12px">
+            <div class="section-label">Hash global del directorio</div>
+            <div class="hash-box" id="extract-hash"></div>
+          </div>
+          <div class="nota green" style="margin-top:12px">
+            ✓ Listo para transferir a EVIDEX por API REST (POST /api/v1/integrations/evidex)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 4: KB -->
+    <div id="panel-4" style="display:none">
+      <div class="card">
+        <div class="card-head"><h3>📚 Knowledge Base — Estado</h3></div>
+        <div class="card-body">
+          <div class="kb-grid" style="margin-bottom:16px">
+            <div class="kb-stat"><div class="kb-num">133</div><div class="kb-label">Chipsets</div></div>
+            <div class="kb-stat"><div class="kb-num amber">161</div><div class="kb-label">Modelos</div></div>
+            <div class="kb-stat"><div class="kb-num green">18</div><div class="kb-label">Fabricantes</div></div>
+            <div class="kb-stat"><div class="kb-num" style="color:#a855f7">16</div><div class="kb-label">CVEs con PoC</div></div>
+          </div>
+          <div class="section-label">Chipsets por nivel de adquisición</div>
+          <div class="kb-bar-wrap">
+            <div class="kb-bar-row"><span class="kb-bar-label">FISICA</span><div class="kb-bar"><div class="kb-bar-fill fisica" style="width:51%"></div></div><span class="kb-bar-count">68</span></div>
+            <div class="kb-bar-row"><span class="kb-bar-label">FS</span><div class="kb-bar"><div class="kb-bar-fill fs" style="width:26%"></div></div><span class="kb-bar-count">35</span></div>
+            <div class="kb-bar-row"><span class="kb-bar-label">LOGICA</span><div class="kb-bar"><div class="kb-bar-fill logica" style="width:2%"></div></div><span class="kb-bar-count">2</span></div>
+            <div class="kb-bar-row"><span class="kb-bar-label">NO DISP</span><div class="kb-bar"><div class="kb-bar-fill no" style="width:21%"></div></div><span class="kb-bar-count">28</span></div>
+          </div>
+          <div class="section-label" style="margin-top:16px">Familias</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+            <div class="kb-stat"><div class="kb-num" style="font-size:18px">43</div><div class="kb-label">MediaTek</div></div>
+            <div class="kb-stat"><div class="kb-num" style="font-size:18px">53</div><div class="kb-label">Qualcomm</div></div>
+            <div class="kb-stat"><div class="kb-num" style="font-size:18px">24</div><div class="kb-label">Exynos</div></div>
+            <div class="kb-stat"><div class="kb-num" style="font-size:18px">13</div><div class="kb-label">Kirin</div></div>
+          </div>
+          <div class="section-label" style="margin-top:16px">Fabricantes clave (modelos con ruta FISICA)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+            <span class="tag">Xiaomi 18</span><span class="tag">Motorola 15</span>
+            <span class="tag">Samsung 8</span><span class="tag">Realme 6</span>
+            <span class="tag">Nokia 6</span><span class="tag">OnePlus 3</span>
+            <span class="tag">OPPO 3</span><span class="tag">LG 4</span>
+            <span class="tag">ZTE 3</span><span class="tag">Alcatel 3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const PROFILES = {
+  mt6762: {
+    mfr:"samsung", model:"SM-A107M", chipset:"MT6762", marketing:"Helio P22",
+    android:"11", patch:"2021-07-01", familia:"MEDIATEK",
+    ceiling:"FISICA", cipher:"FBE", herramienta:"MTKClient",
+    kb_match:"Samsung Galaxy A10s",
+    props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-A107M",
+           "ro.board.platform":"mt6762","ro.build.version.release":"11",
+           "ro.build.version.security_patch":"2021-07-01",
+           "ro.crypto.type":"file","ro.crypto.state":"encrypted",
+           "ro.boot.verifiedbootstate":"green"},
+    patch_months:64,
+    cves:[
+      {id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico para MediaTek. Crítico para MT6762/MT6739."},
+      {id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 9-11, parche anterior a nov 2021."},
+      {id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Android 11-12 con parche anterior a jun 2022."},
+      {id:"CVE-2022-38181",nombre:"ARM Mali GPU use-after-free",tipo:"ROOT",rel:"ALTA",nota:"MediaTek con GPU Mali. Parche anterior a oct 2022."},
+      {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13, parche anterior a mar 2023."},
+    ],
+    top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver - out of bounds write"},
+    route:[
+      {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo (Faraday / modo avión) encendido. No reiniciar."},
+      {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado físico. Registrar IMEI, número de serie."},
+      {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"Extracción lógica via ADB backup o agente forense."},
+      {n:4,tipo:"EXTRACCION_FISICA_BROM",obl:false,pe:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen de userdata."},
+      {n:5,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"Aplicar CVE-2021-39793 en AFU para copiar /data/data/ descifrado.",warn:"Documentar CVE, versión del PoC y resultado en el informe pericial."},
+      {n:6,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive anterior al evento."},
+    ]
+  },
+  exynos7570: {
+    mfr:"samsung", model:"SM-J400M", chipset:"Exynos 7570", marketing:"Exynos 7570",
+    android:"9", patch:"2020-04-01", familia:"EXYNOS",
+    ceiling:"FS", cipher:"FBE", herramienta:"ADB + Heimdall",
+    kb_match:"Samsung Galaxy J4",
+    props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-J400M",
+           "ro.board.platform":"exynos7570","ro.build.version.release":"9",
+           "ro.build.version.security_patch":"2020-04-01",
+           "ro.crypto.type":"file","ro.crypto.state":"encrypted",
+           "ro.boot.verifiedbootstate":"green"},
+    patch_months:79,
+    cves:[
+      {id:"CVE-2020-0423",nombre:"Binder use-after-free (kernel 4.14)",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 8-10 con parche anterior a oct 2020."},
+      {id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 9-11 con parche anterior a nov 2021."},
+      {id:"CVE-2022-38181",nombre:"ARM Mali GPU use-after-free",tipo:"ROOT",rel:"ALTA",nota:"Exynos con GPU Mali. Parche anterior a oct 2022."},
+    ],
+    top_cve:{id:"CVE-2020-0423",nombre:"Binder use-after-free (kernel 4.14)"},
+    route:[
+      {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+      {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado físico. Registrar IMEI."},
+      {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"Extracción lógica via ADB si depuración activa."},
+      {n:4,tipo:"N-DAY CVE-2020-0423",obl:false,pe:true,action:"Aplicar CVE-2020-0423 (Binder UAF) para acceder a /data/data/ en AFU.",warn:"Sin ruta física pública (Exynos/Knox). N-day es la ruta principal."},
+      {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive / Samsung Cloud."},
+    ]
+  },
+  msm8937: {
+    mfr:"motorola", model:"XT1676", chipset:"MSM8937", marketing:"Snapdragon 430",
+    android:"8.1", patch:"2018-11-01", familia:"QUALCOMM",
+    ceiling:"FISICA", cipher:"FDE", herramienta:"edl (Bjoern Kerler)",
+    kb_match:"Motorola Moto G5",
+    props:{"ro.product.manufacturer":"motorola","ro.product.model":"XT1676",
+           "ro.board.platform":"msm8937","ro.build.version.release":"8.1",
+           "ro.build.version.security_patch":"2018-11-01",
+           "ro.crypto.type":"block","ro.crypto.state":"encrypted",
+           "ro.boot.verifiedbootstate":"green"},
+    patch_months:96,
+    cves:[
+      {id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 7-9. Parche anterior a oct 2019. Muy documentado."},
+      {id:"CVE-2020-0423",nombre:"Binder use-after-free (kernel 4.14)",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 8-10. Parche anterior a oct 2020."},
+    ],
+    top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},
+    route:[
+      {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+      {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado físico. Registrar IMEI."},
+      {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL (Vol abajo + USB) → edl.py + programmer MSM8937 → imagen de userdata."},
+      {n:4,tipo:"DESCIFRADO_FDE",obl:false,action:"FDE: descifrar imagen con PIN/patrón conocido (Autopsy/viaforensics)."},
+      {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive anterior al evento."},
+    ]
+  },
+  sdm732: {
+    mfr:"Xiaomi", model:"POCO X3 NFC (surya)", chipset:"SDM732G", marketing:"Snapdragon 732G",
+    android:"12", patch:"2022-05-01", familia:"QUALCOMM",
+    ceiling:"FISICA", cipher:"FBE", herramienta:"edl (Bjoern Kerler)",
+    kb_match:"Xiaomi POCO X3 NFC",
+    props:{"ro.product.manufacturer":"Xiaomi","ro.product.model":"M2007J20CG",
+           "ro.board.platform":"sdm732","ro.build.version.release":"12",
+           "ro.build.version.security_patch":"2022-05-01",
+           "ro.crypto.type":"file","ro.crypto.state":"encrypted",
+           "ro.boot.verifiedbootstate":"green"},
+    patch_months:54,
+    cves:[
+      {id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo. Acceso a /data/data/ sin root."},
+      {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13, parche anterior a mar 2023."},
+      {id:"CVE-2022-20452",nombre:"Android Framework LauncherApps",tipo:"DATOS",rel:"ALTA",nota:"Android 11-12 con parche anterior a nov 2022."},
+    ],
+    top_cve:{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal"},
+    route:[
+      {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+      {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado físico. Registrar IMEI."},
+      {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer surya (público) → imagen de userdata."},
+      {n:4,tipo:"N-DAY CVE-2024-0044",obl:false,pe:true,action:"Aplicar CVE-2024-0044 con ADB activo → acceso directo a /data/data/.",warn:"Verificar que sea SDM732G (X3 NFC) y NO SDM860 (X3 Pro). Programmers distintos."},
+      {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+    ]
+  },
+  kirin710: {
+    mfr:"HUAWEI", model:"POT-LX3", chipset:"Kirin 710", marketing:"HiSilicon Kirin 710",
+    android:"10", patch:"2021-01-01", familia:"KIRIN",
+    ceiling:"FS", cipher:"FBE", herramienta:"ADB",
+    kb_match:"Huawei P Smart 2019",
+    props:{"ro.product.manufacturer":"HUAWEI","ro.product.model":"POT-LX3",
+           "ro.board.platform":"kirin710","ro.build.version.release":"10",
+           "ro.build.version.security_patch":"2021-01-01",
+           "ro.crypto.type":"file","ro.crypto.state":"encrypted"},
+    patch_months:70,
+    cves:[
+      {id:"CVE-2021-0963",nombre:"Android Framework privilege escalation",tipo:"DATOS",rel:"MEDIA",nota:"Android 10-11 con parche anterior a nov 2021."},
+      {id:"CVE-2020-0096",nombre:"StrandHogg 2.0",tipo:"DATOS",rel:"BAJA",nota:"Android 6-9. Acceso a credenciales."},
+    ],
+    top_cve:{id:"CVE-2021-0963",nombre:"Android Framework privilege escalation"},
+    route:[
+      {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+      {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+      {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"ADB backup si depuración activa. Sin equivalente EDL/BROM para Kirin."},
+      {n:4,tipo:"N-DAY CVE-2021-0963",obl:false,pe:true,action:"Aplicar CVE-2021-0963 para elevar a system y acceder a datos.",warn:"Kirin: sin herramienta pública de bajo nivel. N-day es la única ruta a datos de usuario."},
+      {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive / Huawei Cloud."},
+    ]
+  },
+  mt6739: {
+    mfr:"NOBLEX", model:"X7", chipset:"MT6739", marketing:"Helio A22",
+    android:"8.1", patch:"2019-06-01", familia:"MEDIATEK",
+    ceiling:"FISICA", cipher:"FBE", herramienta:"MTKClient",
+    kb_match:"Noblex Noblex X7",
+    props:{"ro.product.manufacturer":"NOBLEX","ro.product.model":"X7",
+           "ro.board.platform":"mt6739","ro.build.version.release":"8.1",
+           "ro.build.version.security_patch":"2019-06-01",
+           "ro.crypto.type":"file","ro.crypto.state":"encrypted"},
+    patch_months:89,
+    cves:[
+      {id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)",tipo:"ROOT",rel:"ALTA",nota:"Uno de los exploits más documentados. Parche anterior a oct 2019."},
+      {id:"CVE-2020-0423",nombre:"Binder use-after-free (kernel 4.14)",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 8-10. Parche anterior a oct 2020."},
+      {id:"CVE-2016-5195",nombre:"Dirty COW",tipo:"ROOT",rel:"ALTA",nota:"Android 5-7. Clásico. Parche anterior a dic 2016."},
+    ],
+    top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},
+    route:[
+      {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+      {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+      {n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen de userdata."},
+      {n:4,tipo:"N-DAY CVE-2019-2215",obl:false,pe:true,action:"Aplicar CVE-2019-2215 (Binder UAF) en AFU → root → /data/data/.",warn:"89 meses de parche. Ventana de N-day máxima. Documentar todo."},
+      {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+    ]
+  }
+};
+
+// ── SAMSUNG NUEVOS ──────────────────────────────────────────────────────────
+PROFILES.samsung_j5pro = {
+  mfr:"samsung",model:"SM-J530M",chipset:"Exynos 7870",marketing:"Exynos 7870",
+  android:"9",patch:"2020-03-01",familia:"EXYNOS",
+  ceiling:"FS",cipher:"FBE",herramienta:"ADB + Heimdall",
+  kb_match:"Samsung Galaxy J5 Pro",patch_months:80,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-J530M",
+         "ro.board.platform":"exynos7870","ro.build.version.release":"9",
+         "ro.build.version.security_patch":"2020-03-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2020-0423",nombre:"Binder use-after-free (kernel 4.14)",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 8-10. Parche anterior a oct 2020."},
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Root en Android 9-11. Parche anterior a nov 2021."},
+    {id:"CVE-2022-38181",nombre:"ARM Mali GPU use-after-free",tipo:"ROOT",rel:"ALTA",nota:"Exynos con GPU Mali. Parche anterior a oct 2022."},
+  ],
+  top_cve:{id:"CVE-2020-0423",nombre:"Binder use-after-free (kernel 4.14)"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado físico. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"Extracción lógica via ADB si depuración activa."},
+    {n:4,tipo:"N-DAY CVE-2020-0423",obl:false,pe:true,action:"Aplicar CVE-2020-0423 (Binder UAF) en AFU → root → /data/data/.",warn:"Exynos/Knox: sin ruta física. N-day es la ruta principal."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive / Samsung Cloud."},
+  ]
+};
+PROFILES.samsung_j7prime = {
+  mfr:"samsung",model:"SM-G610M",chipset:"Exynos 7870",marketing:"Exynos 7870",
+  android:"8.1",patch:"2019-07-01",familia:"EXYNOS",
+  ceiling:"FS",cipher:"FBE",herramienta:"ADB + Heimdall",
+  kb_match:"Samsung Galaxy J7 Prime",patch_months:88,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-G610M",
+         "ro.board.platform":"exynos7870","ro.build.version.release":"8.1",
+         "ro.build.version.security_patch":"2019-07-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2019. Clásico de herramientas forenses."},
+    {id:"CVE-2020-0423",nombre:"Binder UAF (kernel 4.14)",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2020."},
+    {id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Exynos con Mali. Parche anterior a oct 2022."},
+  ],
+  top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"ADB backup si depuración activa."},
+    {n:4,tipo:"N-DAY CVE-2019-2215",obl:false,pe:true,action:"Aplicar CVE-2019-2215 (Binder UAF) en AFU → root → /data/data/.",warn:"88 meses de parche. Ventana N-day máxima. Uno de los más comunes en Argentina."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Samsung Cloud / Google Drive."},
+  ]
+};
+PROFILES.samsung_a03s = {
+  mfr:"samsung",model:"SM-A037M",chipset:"MT6765",marketing:"Helio G35",
+  android:"11",patch:"2022-01-01",familia:"MEDIATEK",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",
+  kb_match:"Samsung Galaxy A03s",patch_months:58,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-A037M",
+         "ro.board.platform":"mt6765","ro.build.version.release":"11",
+         "ro.build.version.security_patch":"2022-01-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Android 11-12 con parche anterior a jun 2022."},
+    {id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"MediaTek con Mali. Parche anterior a oct 2022."},
+    {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13, parche anterior a mar 2023."},
+  ],
+  top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado físico. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen de userdata."},
+    {n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"Aplicar CVE-2022-20233 (MediaTek OOB) en AFU → root → /data/data/.",warn:"BROM accesible en firmwares sin DAA. Verificar antes de intentar."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+PROFILES.samsung_a50 = {
+  mfr:"samsung",model:"SM-A505M",chipset:"Exynos 9610",marketing:"Exynos 9610",
+  android:"11",patch:"2021-09-01",familia:"EXYNOS",
+  ceiling:"FS",cipher:"FBE",herramienta:"ADB + Heimdall",
+  kb_match:"Samsung Galaxy A50",patch_months:62,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-A505M",
+         "ro.board.platform":"exynos9610","ro.build.version.release":"11",
+         "ro.build.version.security_patch":"2021-09-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},
+    {id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Exynos 9610 con Mali G72."},
+    {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13, parche anterior a mar 2023."},
+  ],
+  top_cve:{id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"ADB backup si depuración activa."},
+    {n:4,tipo:"N-DAY CVE-2021-1048",obl:false,pe:true,action:"Aplicar CVE-2021-1048 (Kernel epoll UAF) en AFU → root → /data/data/.",warn:"Uno de los Samsung A más comunes en Argentina. Knox activo: N-day es la ruta principal."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Samsung Cloud / Google Drive."},
+  ]
+};
+PROFILES.samsung_a71 = {
+  mfr:"samsung",model:"SM-A715M",chipset:"SDM730",marketing:"Snapdragon 730",
+  android:"11",patch:"2021-10-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"Samsung Galaxy A71",patch_months:61,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-A715M",
+         "ro.board.platform":"sdm730","ro.build.version.release":"11",
+         "ro.build.version.security_patch":"2021-10-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},
+    {id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},
+    {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."},
+  ],
+  top_cve:{id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL (Vol abajo + USB) → edl.py + programmer SDM730 → imagen de userdata."},
+    {n:4,tipo:"N-DAY CVE-2021-1048",obl:false,pe:true,action:"Aplicar CVE-2021-1048 en AFU → root → /data/data/ descifrado.",warn:"Samsung con Knox: programmer EDL disponible pero imagen cifrada. N-day necesario para datos descifrados."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Samsung Cloud / Google Drive."},
+  ]
+};
+PROFILES.samsung_s5 = {
+  mfr:"samsung",model:"SM-G900M",chipset:"MSM8974AC",marketing:"Snapdragon 801",
+  android:"6.0",patch:"2016-11-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"NINGUNO",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"Samsung Galaxy S5 (Snapdragon)",patch_months:120,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-G900M",
+         "ro.board.platform":"msm8974","ro.build.version.release":"6.0",
+         "ro.build.version.security_patch":"2016-11-01",
+         "ro.crypto.type":"none","ro.crypto.state":"unencrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2016-5195",nombre:"Dirty COW",tipo:"ROOT",rel:"ALTA",nota:"Android 5-7. Clásico. Parche anterior a dic 2016. 120 meses."},
+    {id:"CVE-2019-2215",nombre:"Binder UAF",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2019."},
+  ],
+  top_cve:{id:"CVE-2016-5195",nombre:"Dirty COW"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer MSM8974 → imagen de userdata."},
+    {n:4,tipo:"SIN_CIFRADO",obl:false,action:"Android 6 sin cifrado activo → datos legibles directamente en la imagen.",warn:"120 meses de parche. Sin cifrado. Extracción directa con máxima prioridad."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+PROFILES.samsung_s9 = {
+  mfr:"samsung",model:"SM-G960F",chipset:"Exynos 9810",marketing:"Exynos 9810",
+  android:"10",patch:"2020-11-01",familia:"EXYNOS",
+  ceiling:"FS",cipher:"FBE",herramienta:"ADB + Heimdall",
+  kb_match:"Samsung Galaxy S9",patch_months:72,
+  props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-G960F",
+         "ro.board.platform":"exynos9810","ro.build.version.release":"10",
+         "ro.build.version.security_patch":"2020-11-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},
+    {id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Exynos 9810 con Mali G72."},
+    {id:"CVE-2022-20452",nombre:"Android Framework LauncherApps",tipo:"DATOS",rel:"ALTA",nota:"Android 11-12 con parche anterior a nov 2022."},
+  ],
+  top_cve:{id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_LOGICA",obl:false,action:"ADB backup si depuración activa."},
+    {n:4,tipo:"N-DAY CVE-2021-1048",obl:false,pe:true,action:"Aplicar CVE-2021-1048 en AFU → root → /data/data/.",warn:"Knox máximo en S9. Sin ruta física pública. Frecuente en robos de alta gama."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Samsung Cloud / Google Drive."},
+  ]
+};
+
+// ── ADVANCE ─────────────────────────────────────────────────────────────────
+PROFILES.advance_l6 = {
+  mfr:"ADVANCE",model:"L6",chipset:"MT6739",marketing:"Helio A22",
+  android:"9",patch:"2019-08-01",familia:"MEDIATEK",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",
+  kb_match:"Advance L6",patch_months:87,
+  props:{"ro.product.manufacturer":"ADVANCE","ro.product.model":"L6",
+         "ro.board.platform":"mt6739","ro.build.version.release":"9",
+         "ro.build.version.security_patch":"2019-08-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted"},
+  cves:[
+    {id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2019. Clásico. 87 meses de parche."},
+    {id:"CVE-2020-0423",nombre:"Binder UAF kernel 4.14",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2020."},
+    {id:"CVE-2016-5195",nombre:"Dirty COW",tipo:"ROOT",rel:"ALTA",nota:"Android 5-7. Parche anterior a dic 2016."},
+  ],
+  top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen de userdata."},
+    {n:4,tipo:"N-DAY CVE-2019-2215",obl:false,pe:true,action:"Aplicar CVE-2019-2215 en AFU → root → /data/data/.",warn:"Marca argentina: parche congelado en 2019 garantizando máxima ventana N-day."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+PROFILES.advance_octoq5 = {
+  mfr:"ADVANCE",model:"OctoQ5",chipset:"MT6762",marketing:"Helio P22",
+  android:"11",patch:"2021-05-01",familia:"MEDIATEK",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",
+  kb_match:"Advance OctoQ5",patch_months:66,
+  props:{"ro.product.manufacturer":"ADVANCE","ro.product.model":"OctoQ5",
+         "ro.board.platform":"mt6762","ro.build.version.release":"11",
+         "ro.build.version.security_patch":"2021-05-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},
+  cves:[
+    {id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico para MediaTek. Parche anterior a mar 2022."},
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},
+    {id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},
+  ],
+  top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen."},
+    {n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"Aplicar CVE-2021-39793 (MediaTek CMDQ) en AFU → root → /data/data/.",warn:"Parche congelado en 2021. Alta probabilidad de éxito con CVEs MediaTek específicos."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+// ── HTC ─────────────────────────────────────────────────────────────────────
+PROFILES.htc_m8 = {
+  mfr:"HTC",model:"HTC_M8",chipset:"MSM8974",marketing:"Snapdragon 801",
+  android:"6.0",patch:"2016-07-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"NINGUNO",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"HTC One M8",patch_months:124,
+  props:{"ro.product.manufacturer":"HTC","ro.product.model":"HTC_M8",
+         "ro.board.platform":"msm8974","ro.build.version.release":"6.0",
+         "ro.build.version.security_patch":"2016-07-01",
+         "ro.crypto.type":"none","ro.crypto.state":"unencrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2016-5195",nombre:"Dirty COW",tipo:"ROOT",rel:"ALTA",nota:"Android 5-7. 124 meses de parche. Clásico definitivo."},
+    {id:"CVE-2019-2215",nombre:"Binder UAF",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2019."},
+  ],
+  top_cve:{id:"CVE-2016-5195",nombre:"Dirty COW"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer MSM8974 (público) → imagen de userdata."},
+    {n:4,tipo:"SIN_CIFRADO",obl:false,action:"Android 6 sin cifrado activo → datos legibles directamente.",warn:"124 meses de parche. Sin cifrado. Extracción directa con máxima prioridad. Causas históricas."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+PROFILES.htc_u11 = {
+  mfr:"HTC",model:"HTC U-1w",chipset:"MSM8998",marketing:"Snapdragon 835",
+  android:"9.0",patch:"2019-10-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"HTC U11",patch_months:85,
+  props:{"ro.product.manufacturer":"HTC","ro.product.model":"HTC U-1w",
+         "ro.board.platform":"msm8998","ro.build.version.release":"9.0",
+         "ro.build.version.security_patch":"2019-10-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2020-0423",nombre:"Binder UAF kernel 4.14",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2020."},
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},
+    {id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},
+  ],
+  top_cve:{id:"CVE-2020-0423",nombre:"Binder UAF kernel 4.14"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer MSM8998 (U11) → imagen de userdata."},
+    {n:4,tipo:"N-DAY CVE-2020-0423",obl:false,pe:true,action:"Aplicar CVE-2020-0423 en AFU → root → /data/data/ descifrado.",warn:"FBE activo. N-day necesario para datos descifrados en AFU."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+// ── BLACKBERRY ───────────────────────────────────────────────────────────────
+PROFILES.bb_keyone = {
+  mfr:"BlackBerry",model:"BBB100-1",chipset:"MSM8953",marketing:"Snapdragon 625",
+  android:"8.1",patch:"2019-05-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"FDE",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"BlackBerry KEYone",patch_months:90,
+  props:{"ro.product.manufacturer":"BlackBerry","ro.product.model":"BBB100-1",
+         "ro.board.platform":"msm8953","ro.build.version.release":"8.1",
+         "ro.build.version.security_patch":"2019-05-01",
+         "ro.crypto.type":"block","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2019. 90 meses."},
+    {id:"CVE-2020-0423",nombre:"Binder UAF kernel 4.14",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2020."},
+  ],
+  top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI. Causas corporativas: documentar cadena de custodia extendida."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL (combinación específica BBB100) + programmer MSM8953 → imagen de userdata."},
+    {n:4,tipo:"DESCIFRADO_FDE",obl:false,action:"FDE: descifrar imagen con PIN/patrón si está disponible."},
+    {n:5,tipo:"N-DAY CVE-2019-2215",obl:false,pe:true,action:"Aplicar CVE-2019-2215 en AFU → root → /data/data/.",warn:"Sin Knox. Mejor perfil EDL que Samsung equivalente. Frecuente en causas de alto perfil."},
+    {n:6,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+PROFILES.bb_key2 = {
+  mfr:"BlackBerry",model:"BBF100-1",chipset:"SDM660",marketing:"Snapdragon 660",
+  android:"10",patch:"2020-08-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"BlackBerry KEY2",patch_months:75,
+  props:{"ro.product.manufacturer":"BlackBerry","ro.product.model":"BBF100-1",
+         "ro.board.platform":"sdm660","ro.build.version.release":"10",
+         "ro.build.version.security_patch":"2020-08-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2021-1048",nombre:"Kernel UAF en epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},
+    {id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},
+    {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13. Parche anterior a mar 2023."},
+  ],
+  top_cve:{id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer SDM660 → imagen de userdata."},
+    {n:4,tipo:"N-DAY CVE-2021-1048",obl:false,pe:true,action:"Aplicar CVE-2021-1048 en AFU → root → /data/data/.",warn:"Sin Knox. FBE activo. N-day necesario para datos descifrados."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+// ── POCO ─────────────────────────────────────────────────────────────────────
+PROFILES.poco_f1 = {
+  mfr:"Xiaomi",model:"beryllium",chipset:"SDM845",marketing:"Snapdragon 845",
+  android:"11",patch:"2022-02-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"POCO F1",patch_months:57,
+  props:{"ro.product.manufacturer":"Xiaomi","ro.product.model":"POCO F1",
+         "ro.product.name":"beryllium","ro.board.platform":"sdm845",
+         "ro.build.version.release":"11","ro.build.version.security_patch":"2022-02-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},
+    {id:"CVE-2022-20452",nombre:"Android Framework LauncherApps",tipo:"DATOS",rel:"ALTA",nota:"Android 11-12. Parche anterior a nov 2022."},
+    {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13. Parche anterior a mar 2023."},
+  ],
+  top_cve:{id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer beryllium (público, excelentemente documentado) → imagen."},
+    {n:4,tipo:"N-DAY CVE-2022-22057",obl:false,pe:true,action:"Aplicar CVE-2022-22057 (Qualcomm display UAF) en AFU → root → /data/data/.",warn:"Sin Knox. Mejor caso de soporte EDL en su gama. FBE activo requiere N-day en AFU."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+PROFILES.poco_f3 = {
+  mfr:"Xiaomi",model:"alioth",chipset:"SDM870",marketing:"Snapdragon 870",
+  android:"12",patch:"2022-07-01",familia:"QUALCOMM",
+  ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",
+  kb_match:"POCO F3",patch_months:52,
+  props:{"ro.product.manufacturer":"Xiaomi","ro.product.model":"POCO F3",
+         "ro.product.name":"alioth","ro.board.platform":"sm8250",
+         "ro.build.version.release":"12","ro.build.version.security_patch":"2022-07-01",
+         "ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},
+  cves:[
+    {id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},
+    {id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo. Parche anterior a mar 2024."},
+    {id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13. Parche anterior a mar 2023."},
+  ],
+  top_cve:{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal"},
+  route:[
+    {n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. No reiniciar."},
+    {n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},
+    {n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer alioth (público) → imagen de userdata."},
+    {n:4,tipo:"N-DAY CVE-2024-0044",obl:false,pe:true,action:"Aplicar CVE-2024-0044 con ADB activo → acceso directo a /data/data/.",warn:"POCO F3: sin Knox, excelente soporte EDL. CVE-2024-0044 con ADB es la ruta más limpia."},
+    {n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."},
+  ]
+};
+
+// ── MEIZU ────────────────────────────────────────────────────────────────────
+PROFILES.meizu_m5={mfr:"Meizu",model:"Meizu M5",chipset:"MT6750",marketing:"Helio P10",android:"7.0",patch:"2018-03-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FDE",herramienta:"MTKClient",kb_match:"Meizu M5",patch_months:104,props:{"ro.product.manufacturer":"Meizu","ro.product.model":"Meizu M5","ro.board.platform":"mt6750","ro.build.version.release":"7.0","ro.build.version.security_patch":"2018-03-01","ro.crypto.type":"block","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2019-2215",nombre:"Binder UAF",tipo:"ROOT",rel:"ALTA",nota:"104 meses de parche. Clásico."}],top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen."},{n:4,tipo:"DESCIFRADO_FDE",obl:false,action:"FDE: descifrar con PIN/patrón conocido."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."}]};
+PROFILES.meizu_note9={mfr:"Meizu",model:"Meizu Note 9",chipset:"SDM675",marketing:"Snapdragon 675",android:"9.0",patch:"2019-12-01",familia:"QUALCOMM",ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",kb_match:"Meizu Note 9",patch_months:83,props:{"ro.product.manufacturer":"Meizu","ro.product.model":"Meizu Note 9","ro.board.platform":"sdm675","ro.build.version.release":"9.0","ro.build.version.security_patch":"2019-12-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2019-2215",nombre:"Binder UAF",tipo:"ROOT",rel:"ALTA",nota:"83 meses de parche."},{id:"CVE-2020-0423",nombre:"Binder UAF kernel 4.14",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2020."}],top_cve:{id:"CVE-2019-2215",nombre:"Binder UAF (Stagefright elevado)"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer SDM675 → imagen."},{n:4,tipo:"N-DAY CVE-2019-2215",obl:false,pe:true,action:"Aplicar CVE-2019-2215 en AFU → root → /data/data/.",warn:"FBE activo. N-day necesario para datos descifrados."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."}]};
+// ── BLU ──────────────────────────────────────────────────────────────────────
+PROFILES.blu_g80={mfr:"BLU",model:"G0310WW",chipset:"MT6762",marketing:"Helio P22",android:"10",patch:"2020-10-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"BLU G80",patch_months:73,props:{"ro.product.manufacturer":"BLU","ro.product.model":"G0310WW","ro.board.platform":"mt6762","ro.build.version.release":"10","ro.build.version.security_patch":"2020-10-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek. Parche anterior a mar 2022."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"Aplicar CVE-2021-39793 en AFU → root → /data/data/.",warn:"FBE activo. N-day necesario."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."}]};
+// ── HYUNDAI ───────────────────────────────────────────────────────────────────
+PROFILES.hyundai_e650={mfr:"HYUNDAI",model:"E650",chipset:"MT6762",marketing:"Helio P22",android:"10",patch:"2020-07-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Hyundai E650",patch_months:76,props:{"ro.product.manufacturer":"HYUNDAI","ro.product.model":"E650","ro.board.platform":"mt6762","ro.build.version.release":"10","ro.build.version.security_patch":"2020-07-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek. Marca argentina: parche congelado."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"Aplicar CVE-2021-39793 en AFU → root → /data/data/.",warn:"Marca argentina con parche congelado. Alta probabilidad de éxito."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."}]};
+// ── MOTOROLA EDGE ─────────────────────────────────────────────────────────────
+PROFILES.moto_edge_s={mfr:"motorola",model:"XT2141",chipset:"SDM870",marketing:"Snapdragon 870",android:"11",patch:"2022-03-01",familia:"QUALCOMM",ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",kb_match:"Motorola Edge S",patch_months:56,props:{"ro.product.manufacturer":"motorola","ro.product.model":"XT2141","ro.board.platform":"sm8250","ro.build.version.release":"11","ro.build.version.security_patch":"2022-03-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo."}],top_cve:{id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},{n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer SM8250/alioth compatible → imagen."},{n:4,tipo:"N-DAY CVE-2022-22057",obl:false,pe:true,action:"Aplicar CVE-2022-22057 (Qualcomm display UAF) en AFU → root → /data/data/.",warn:"Mismo chipset que POCO F3. Mismo programmer (alioth). Sin Knox."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."}]};
+PROFILES.moto_edge_20={mfr:"motorola",model:"XT2139",chipset:"MT6779",marketing:"Helio P90",android:"11",patch:"2021-11-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Motorola Edge 20 Lite",patch_months:60,props:{"ro.product.manufacturer":"motorola","ro.product.model":"XT2139","ro.board.platform":"mt6779","ro.build.version.release":"11","ro.build.version.security_patch":"2021-11-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},{id:"CVE-2022-20233",nombre:"MediaTek driver OOB",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient (verificar DAA en MT6779) → imagen.",warn:"DAA parcial en MT6779. Verificar firmware antes de intentar."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"Aplicar CVE-2022-20233 en AFU → root → /data/data/."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Verificar copia en Google Drive."}]};
+
+// ── RINGO ─────────────────────────────────────────────────────────────────────
+PROFILES.ringo_q2={mfr:"Ringo",model:"Q2",chipset:"MT6762",marketing:"Helio P22",android:"10",patch:"2021-04-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Ringo Q2",patch_months:67,props:{"ro.product.manufacturer":"Ringo","ro.product.model":"Q2","ro.board.platform":"mt6762","ro.build.version.release":"10","ro.build.version.security_patch":"2021-04-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek. Parche anterior a mar 2022."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM (Vol abajo + USB sin batería) → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"CVE-2021-39793 en AFU → root → /data/data/.",warn:"MARCA ARGENTINA: parche congelado en 2021 desde fábrica. Alta probabilidad de éxito. Uno de los teléfonos más vendidos en Fravega/Garbarino."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.ringo_q5={mfr:"Ringo",model:"Q5",chipset:"MT6765",marketing:"Helio G35",android:"11",patch:"2022-02-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Ringo Q5",patch_months:57,props:{"ro.product.manufacturer":"Ringo","ro.product.model":"Q5","ro.board.platform":"mt6765","ro.build.version.release":"11","ro.build.version.security_patch":"2022-02-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"MediaTek con Mali. Parche anterior a oct 2022."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen.",warn:"DAA parcial en MT6765. Verificar firmware antes de intentar."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"CVE-2022-20233 en AFU → root → /data/data/.",warn:"Marca argentina. Parche congelado desde 2022."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+// ── VIVO AMPLIADO ─────────────────────────────────────────────────────────────
+PROFILES.vivo_y16={mfr:"vivo",model:"V2204",chipset:"MT6765",marketing:"Helio G35",android:"12",patch:"2022-07-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"vivo Y16",patch_months:52,props:{"ro.product.manufacturer":"vivo","ro.product.model":"V2204","ro.board.platform":"mt6765","ro.build.version.release":"12","ro.build.version.security_patch":"2022-07-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2022."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen.",warn:"DAA parcial en MT6765."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"CVE-2022-20233 en AFU → root → /data/data/.",warn:"Sin Knox. Uno de los vivo más vendidos en Argentina 2022."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.vivo_y30={mfr:"vivo",model:"V2031",chipset:"MT6765",marketing:"Helio G35",android:"10",patch:"2021-02-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"vivo Y30",patch_months:69,props:{"ro.product.manufacturer":"vivo","ro.product.model":"V2031","ro.board.platform":"mt6765","ro.build.version.release":"10","ro.build.version.security_patch":"2021-02-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen.",warn:"DAA parcial en MT6765."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"CVE-2021-39793 en AFU → /data/data/.",warn:"Sin Knox. Parche congelado 2021. Alta probabilidad N-day."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+// ── PHILIPS / TCL ─────────────────────────────────────────────────────────────
+PROFILES.philips_s568={mfr:"Philips",model:"PHL-S568",chipset:"MT6762",marketing:"Helio P22",android:"11",patch:"2021-10-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Philips PHL-S568",patch_months:61,props:{"ro.product.manufacturer":"Philips","ro.product.model":"PHL-S568","ro.board.platform":"mt6762","ro.build.version.release":"11","ro.build.version.security_patch":"2021-10-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek."},{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"CVE-2021-39793 en AFU → /data/data/.",warn:"Perfil idéntico a Advance/Ringo. Parche congelado."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.tcl_30se={mfr:"TCL",model:"T671K",chipset:"MT6762",marketing:"Helio P22",android:"12",patch:"2022-03-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"TCL 30 SE",patch_months:56,props:{"ro.product.manufacturer":"TCL","ro.product.model":"T671K","ro.board.platform":"mt6762","ro.build.version.release":"12","ro.build.version.security_patch":"2022-03-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2022."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"CVE-2022-20233 en AFU → /data/data/.",warn:"Sin Knox. TCL/Alcatel: mismo perfil MediaTek sin capa adicional de protección."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+// ── GOOGLE PIXEL ─────────────────────────────────────────────────────────────
+PROFILES.pixel_4a={mfr:"Google",model:"sunfish",chipset:"SDM730G",marketing:"Snapdragon 730G",android:"13",patch:"2022-09-01",familia:"QUALCOMM",ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",kb_match:"Google Pixel 4a",patch_months:50,props:{"ro.product.manufacturer":"Google","ro.product.model":"Pixel 4a","ro.product.name":"sunfish","ro.board.platform":"sdm730","ro.build.version.release":"13","ro.build.version.security_patch":"2022-09-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm. Parche anterior a jul 2022."},{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo. Parche anterior a mar 2024."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},{n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer sunfish (público) → imagen de userdata."},{n:4,tipo:"N-DAY CVE-2024-0044",obl:false,pe:true,action:"CVE-2024-0044 con ADB activo → acceso a /data/data/.",warn:"Sin Knox. Pixel 4a: uno de los mejores casos de soporte EDL + CVE. Parche 2022 cubre muchos CVEs pero CVE-2024-0044 aplica si no recibió el parche de marzo 2024."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive / Google One backup."}]};
+PROFILES.pixel_6a={mfr:"Google",model:"bluejay",chipset:"GS101",marketing:"Tensor G1",android:"14",patch:"2023-11-01",familia:"GOOGLE_TENSOR",ceiling:"FS",cipher:"FBE_FUERTE",herramienta:"ADB (bootloader desbloqueado)",kb_match:"Google Pixel 6a",patch_months:36,props:{"ro.product.manufacturer":"Google","ro.product.model":"Pixel 6a","ro.product.name":"bluejay","ro.board.platform":"gs101","ro.build.version.release":"14","ro.build.version.security_patch":"2023-11-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2024-43093",nombre:"Android DocumentsUI path traversal",tipo:"DATOS",rel:"ALTA",nota:"Android 12-15. Parche anterior a nov 2024."}],top_cve:{id:"CVE-2024-43093",nombre:"Android DocumentsUI path traversal"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"LIMITACION",obl:false,action:"Tensor G1: sin EDL equivalente. Titan M2 protege claves. Sin herramienta comercial: techo FS.",warn:"TENSOR G1: arquitectura propia sin herramienta pública equivalente. Requiere Cellebrite Premium / GrayKey para acceso físico efectivo."},{n:4,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive / Google One: verificar backup anterior al evento."}]};
+// ── NOTHING PHONE ─────────────────────────────────────────────────────────────
+PROFILES.nothing_1={mfr:"Nothing",model:"Spacewar",chipset:"SDM778G",marketing:"Snapdragon 778G",android:"13",patch:"2023-06-01",familia:"QUALCOMM",ceiling:"NO_DISPONIBLE",cipher:"FBE",herramienta:"edl (sin programmer público)",kb_match:"Nothing Phone 1",patch_months:41,props:{"ro.product.manufacturer":"Nothing","ro.product.model":"A063","ro.product.name":"Spacewar","ro.board.platform":"sm7325","ro.build.version.release":"13","ro.build.version.security_patch":"2023-06-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"LIMITACION",obl:false,action:"SDM778G sin programmer público. Pese a no tener Knox, sin herramienta comercial el techo es lógico.",warn:"Sin Knox pero sin programmer: igual que Samsung con Knox en la práctica. Requiere herramienta comercial para físico."},{n:4,tipo:"N-DAY CVE-2024-0044",obl:false,pe:true,action:"CVE-2024-0044 con ADB activo → acceso a /data/data/ sin root físico.",warn:"Alternativa viable si ADB está habilitado. Sin Knox facilita la explotación."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+// ── RUGGED ────────────────────────────────────────────────────────────────────
+PROFILES.blackview_bv6600={mfr:"Blackview",model:"BV6600",chipset:"MT6762",marketing:"Helio P22",android:"10",patch:"2021-08-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Blackview BV6600",patch_months:63,props:{"ro.product.manufacturer":"Blackview","ro.product.model":"BV6600","ro.board.platform":"mt6762","ro.build.version.release":"10","ro.build.version.security_patch":"2021-08-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Equipo rugged: documentar empresa/obra."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"CVE-2021-39793 en AFU → root → /data/data/.",warn:"Perfil idéntico a Advance/Noblex/Infinix. Parche congelado."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.doogee_s58={mfr:"DOOGEE",model:"S58Pro",chipset:"MT6762",marketing:"Helio P22",android:"10",patch:"2020-11-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Doogee S58 Pro",patch_months:72,props:{"ro.product.manufacturer":"DOOGEE","ro.product.model":"S58Pro","ro.board.platform":"mt6762","ro.build.version.release":"10","ro.build.version.security_patch":"2020-11-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek. 72 meses de parche."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"CVE-2021-39793 en AFU → /data/data/.",warn:"Parche congelado en 2020. Alta probabilidad de éxito."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+// ── TABLETS ───────────────────────────────────────────────────────────────────
+PROFILES.tab_a8={mfr:"samsung",model:"SM-X200",chipset:"UNISOC T618",marketing:"UNISOC Tiger T618",android:"11",patch:"2022-06-01",familia:"UNISOC",ceiling:"FISICA",cipher:"FBE",herramienta:"SPFlashTool",kb_match:"Samsung Galaxy Tab A8",patch_months:53,props:{"ro.product.manufacturer":"samsung","ro.product.model":"SM-X200","ro.board.platform":"ums512","ro.build.version.release":"11","ro.build.version.security_patch":"2022-06-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2022-20233",nombre:"MediaTek/UNISOC driver OOB",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek/UNISOC driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI. Causas escolares: documentar propietario y uso."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"SPFlashTool (modo UNISOC Download) → imagen de userdata.",warn:"NUEVA FAMILIA: UNISOC T618. ro.board.platform = ums512. Herramienta = SPFlashTool (no MTKClient). Knox activo complica el descifrado."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"Aplicar CVE-2022-20233 en AFU → acceso a /data/data/."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive / Samsung Cloud."}]};
+PROFILES.xiaomi_pad5={mfr:"Xiaomi",model:"nabu",chipset:"SDM860",marketing:"Snapdragon 860",android:"13",patch:"2023-02-01",familia:"QUALCOMM",ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",kb_match:"Xiaomi Pad 5",patch_months:45,props:{"ro.product.manufacturer":"Xiaomi","ro.product.model":"Xiaomi Pad 5","ro.product.name":"nabu","ro.board.platform":"sm8150","ro.build.version.release":"13","ro.build.version.security_patch":"2023-02-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer nabu (público) → imagen."},{n:4,tipo:"N-DAY CVE-2024-0044",obl:false,pe:true,action:"CVE-2024-0044 con ADB activo → /data/data/.",warn:"Sin Knox. Xiaomi Pad 5: excelente soporte EDL en tablet. La más accesible de esta categoría."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.lenovo_m10={mfr:"Lenovo",model:"TB-X606F",chipset:"MT6765",marketing:"Helio G35",android:"11",patch:"2021-12-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Lenovo Tab M10 Plus",patch_months:59,props:{"ro.product.manufacturer":"Lenovo","ro.product.model":"TB-X606F","ro.board.platform":"mt6765","ro.build.version.release":"11","ro.build.version.security_patch":"2021-12-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"MediaTek con Mali. Parche anterior a oct 2022."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Causas educativas: documentar institución."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen.",warn:"DAA parcial en MT6765. Verificar firmware antes de intentar."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"CVE-2022-20233 en AFU → root → /data/data/.",warn:"Sin Knox: mejor acceso que Samsung tablets. Lenovo Tab: perfil forense más favorable en tablets MediaTek."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+// ── TRANSSION ────────────────────────────────────────────────────────────────
+PROFILES.infinix_hot11={mfr:"INFINIX",model:"Infinix X689",chipset:"MT6762",marketing:"Helio P22",android:"11",patch:"2021-10-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Infinix Hot 11",patch_months:61,props:{"ro.product.manufacturer":"INFINIX","ro.product.model":"Infinix X689","ro.board.platform":"mt6762","ro.build.version.release":"11","ro.build.version.security_patch":"2021-10-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek. Parche anterior a mar 2022."},{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2022."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado. Registrar IMEI."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"Aplicar CVE-2021-39793 en AFU → root → /data/data/.",warn:"Transsion/Infinix: parche congelado en 2021. Muy común en NOA. Alta probabilidad de éxito."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.tecno_spark7={mfr:"TECNO",model:"Tecno KF6j",chipset:"MT6762",marketing:"Helio P22",android:"11",patch:"2021-09-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Tecno Spark 7",patch_months:62,props:{"ro.product.manufacturer":"TECNO","ro.product.model":"Tecno KF6j","ro.board.platform":"mt6762","ro.build.version.release":"11","ro.build.version.security_patch":"2021-09-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek."},{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"Aplicar CVE-2021-39793 en AFU → /data/data/.",warn:"Perfil idéntico a Infinix Hot 11."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.itel_p36={mfr:"itel",model:"itel P661L",chipset:"MT6762",marketing:"Helio P22",android:"10",patch:"2021-05-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"ITEL P36",patch_months:66,props:{"ro.product.manufacturer":"itel","ro.product.model":"itel P661L","ro.board.platform":"mt6762","ro.build.version.release":"10","ro.build.version.security_patch":"2021-05-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB",tipo:"ROOT",rel:"MUY ALTA",nota:"Específico MediaTek."},{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."}],top_cve:{id:"CVE-2021-39793",nombre:"MediaTek CMDQ driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2021-39793",obl:false,pe:true,action:"CVE-2021-39793 en AFU → /data/data/.",warn:"ITEL: gama más baja de Transsion. Parche mínimo garantizado. Zonas rurales NOA."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.cat_s62={mfr:"CAT",model:"CAT S62 Pro",chipset:"SDM660",marketing:"Snapdragon 660",android:"10",patch:"2021-03-01",familia:"QUALCOMM",ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",kb_match:"CAT S62 Pro",patch_months:68,props:{"ro.product.manufacturer":"CAT","ro.product.model":"CAT S62 Pro","ro.board.platform":"sdm660","ro.build.version.release":"10","ro.build.version.security_patch":"2021-03-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2021-1048",nombre:"Kernel UAF epoll",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a nov 2021."},{id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 10-13."}],top_cve:{id:"CVE-2021-1048",nombre:"Kernel use-after-free en epoll"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido. Equipo rugged: verificar si tiene modo de emergencia activo."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Registrar empresa y contrato (causas laborales)."},{n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer SDM660 → imagen."},{n:4,tipo:"N-DAY CVE-2021-1048",obl:false,pe:true,action:"CVE-2021-1048 en AFU → root → /data/data/.",warn:"Sin Knox. Frecuente en causas laborales (minería, obras). Mismo perfil que BlackBerry KEY2."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.op_8t={mfr:"OnePlus",model:"KB2001",chipset:"SM8250",marketing:"Snapdragon 865",android:"12",patch:"2022-04-01",familia:"QUALCOMM",ceiling:"FISICA",cipher:"FBE",herramienta:"edl (Bjoern Kerler)",kb_match:"OnePlus 8T",patch_months:55,props:{"ro.product.manufacturer":"OnePlus","ro.product.model":"KB2001","ro.product.name":"kebab","ro.board.platform":"kona","ro.build.version.release":"12","ro.build.version.security_patch":"2022-04-01","ro.crypto.type":"file","ro.crypto.state":"encrypted","ro.boot.verifiedbootstate":"green"},cves:[{id:"CVE-2022-22057",nombre:"Qualcomm display driver UAF",tipo:"ROOT",rel:"ALTA",nota:"Específico Qualcomm."},{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal",tipo:"DATOS",rel:"MUY ALTA",nota:"Android 12-14 con ADB activo."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2024-0044",nombre:"createSessionInternal path traversal"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_EDL",obl:false,action:"EDL + programmer kona/KB2001 → imagen."},{n:4,tipo:"N-DAY CVE-2024-0044",obl:false,pe:true,action:"CVE-2024-0044 con ADB → /data/data/.",warn:"Sin Knox. Mejor caso de soporte EDL + CVE en su gama. Android 12 con ADB activo."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+PROFILES.realme_narzo50a={mfr:"realme",model:"RMX3430",chipset:"MT6762",marketing:"Helio P22",android:"11",patch:"2022-01-01",familia:"MEDIATEK",ceiling:"FISICA",cipher:"FBE",herramienta:"MTKClient",kb_match:"Realme narzo 50A",patch_months:58,props:{"ro.product.manufacturer":"realme","ro.product.model":"RMX3430","ro.board.platform":"mt6762","ro.build.version.release":"11","ro.build.version.security_patch":"2022-01-01","ro.crypto.type":"file","ro.crypto.state":"encrypted"},cves:[{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a jun 2022."},{id:"CVE-2022-38181",nombre:"ARM Mali GPU UAF",tipo:"ROOT",rel:"ALTA",nota:"Parche anterior a oct 2022."},{id:"CVE-2023-20963",nombre:"WorkSource parcel mismatch",tipo:"DATOS",rel:"ALTA",nota:"Android 11-13."}],top_cve:{id:"CVE-2022-20233",nombre:"MediaTek driver OOB write"},route:[{n:1,tipo:"PRESERVACION",obl:true,action:"Aislar dispositivo encendido."},{n:2,tipo:"DOCUMENTACION",obl:true,action:"Fotografiar estado."},{n:3,tipo:"EXTRACCION_FISICA_BROM",obl:false,action:"BROM → MTKClient → imagen."},{n:4,tipo:"N-DAY CVE-2022-20233",obl:false,pe:true,action:"CVE-2022-20233 en AFU → root → /data/data/.",warn:"Uno de los más vendidos en gama baja Argentina 2021-2022."},{n:5,tipo:"BACKUP_CLOUD",obl:false,action:"Google Drive."}]};
+
+const EXTRACT_DATA = {
+  infinix_hot11:[{app:"WhatsApp",file:"databases/msgstore.db",kb:980,hash:"a1b3c5d2"},{app:"WhatsApp",file:"files/key",kb:0,hash:"b2c4d6a1"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:210,hash:"c3d5a2b4"},{app:"Contactos",file:"databases/contacts2.db",kb:55,hash:"d4a1b3c5"}],
+  tecno_spark7:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1100,hash:"e5b2c4d1"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:240,hash:"f6c3d5a2"},{app:"Contactos",file:"databases/contacts2.db",kb:62,hash:"a1d4e5b3"}],
+  itel_p36:[{app:"WhatsApp",file:"databases/msgstore.db",kb:720,hash:"b2e5f6c4"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:180,hash:"c3f6a1d5"},{app:"Contactos",file:"databases/contacts2.db",kb:48,hash:"d4a2b3e6"}],
+  cat_s62:[{app:"WhatsApp",file:"databases/msgstore.db",kb:2800,hash:"e5b4c6a3"},{app:"WhatsApp",file:"databases/wa.db",kb:210,hash:"f6c5d1b4"},{app:"Gmail",file:"databases/EmailProvider.db",kb:1450,hash:"a1d6e2c5"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:580,hash:"b2e1f3d6"},{app:"Contactos",file:"databases/contacts2.db",kb:195,hash:"c3f2a4e1"}],
+  op_8t:[{app:"WhatsApp",file:"databases/msgstore.db",kb:6200,hash:"d4a3b5f2"},{app:"WhatsApp",file:"databases/wa.db",kb:410,hash:"e5b4c6a3"},{app:"WhatsApp",file:"files/key",kb:0,hash:"f6c5d1b4"},{app:"Telegram",file:"files/cache4.db",kb:3400,hash:"a1d6e2c5"},{app:"Instagram",file:"databases/direct.db",kb:820,hash:"b2e1f3d6"},{app:"Contactos",file:"databases/contacts2.db",kb:220,hash:"c3f2a4e1"}],
+  realme_narzo50a:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1600,hash:"d4b2e5a3"},{app:"WhatsApp",file:"files/key",kb:0,hash:"e5c3f6b4"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:320,hash:"f6d4a1c5"},{app:"Contactos",file:"databases/contacts2.db",kb:75,hash:"a1e5b2d6"}],
+  mt6762:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:2343,hash:"a1b2c3d4e5f6"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:175,hash:"b2c3d4e5f6a1"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"c3d4e5f6a1b2"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:439,hash:"d4e5f6a1b2c3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:117,hash:"e5f6a1b2c3d4"},
+    {app:"Contactos",file:"databases/calllog.db",kb:83,hash:"f6a1b2c3d4e5"},
+    {app:"Telegram",file:"files/cache4.db",kb:1757,hash:"a1b2c3f4e5d6"},
+  ],
+  exynos7570:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:980,hash:"b2c3d4a1e5f6"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:210,hash:"c3d4a1b2e5f6"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:65,hash:"d4a1b2c3e5f6"},
+  ],
+  msm8937:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:3200,hash:"e5f6b2c3d4a1"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:220,hash:"f6a1c3d4b2e5"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:580,hash:"a1e5d4c3b2f6"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:140,hash:"b2f6e5c3d4a1"},
+    {app:"Instagram",file:"databases/direct.db",kb:430,hash:"c3a1f6e5d4b2"},
+  ],
+  sdm732:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:5100,hash:"d4b2a1f6e5c3"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:310,hash:"e5c3b2a1f6d4"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"f6d4c3b2a1e5"},
+    {app:"Telegram",file:"files/cache4.db",kb:2200,hash:"a1e5d4f6c3b2"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:720,hash:"b2f6e5d4c3a1"},
+  ],
+  kirin710:[
+    {app:"Contactos",file:"databases/contacts2.db",kb:88,hash:"c3a1b2e5d4f6"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:190,hash:"d4b2c3f6e5a1"},
+  ],
+  samsung_j5pro:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:1650,hash:"a3b4c5d6e7f8"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:140,hash:"b4c5d6e7f8a3"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:380,hash:"c5d6e7f8a3b4"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:95,hash:"d6e7f8a3b4c5"},
+  ],
+  samsung_j7prime:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:2800,hash:"e7f8a3b4c5d6"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:195,hash:"f8a3b4c5d6e7"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:510,hash:"a3b4d6e7f8c5"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:110,hash:"b4c5f8a3d6e7"},
+    {app:"Instagram",file:"databases/direct.db",kb:380,hash:"c5d6a3b4f8e7"},
+  ],
+  samsung_a03s:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:1900,hash:"d6e7b4c5a3f8"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"e7f8c5d6b4a3"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:290,hash:"f8a3d6e7c5b4"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:78,hash:"a3b4e7f8d6c5"},
+  ],
+  samsung_a50:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:3400,hash:"b4c5f8a3e7d6"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:260,hash:"c5d6a3b4f8e7"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"d6e7b4c5a3f8"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:620,hash:"e7f8c5d6b4a3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:145,hash:"f8a3d6e7c5b4"},
+    {app:"Telegram",file:"files/cache4.db",kb:950,hash:"a3b4e7f8d6c5"},
+  ],
+  samsung_a71:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:4200,hash:"b4c5a3d6f8e7"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:290,hash:"c5d6b4e7a3f8"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"d6e7c5f8b4a3"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:730,hash:"e7f8d6a3c5b4"},
+    {app:"Instagram",file:"databases/direct.db",kb:510,hash:"f8a3e7b4d6c5"},
+    {app:"Telegram",file:"files/cache4.db",kb:1400,hash:"a3b4f8c5e7d6"},
+  ],
+  samsung_s5:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:980,hash:"b4c5a3e7d6f8"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:1200,hash:"c5d6b4f8e7a3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:220,hash:"d6e7c5a3f8b4"},
+    {app:"Chrome",file:"app_chrome/Default/History",kb:85,hash:"e7f8d6b4a3c5"},
+  ],
+  ringo_q2:[{app:"WhatsApp",file:"databases/msgstore.db",kb:850,hash:"r1q2a3b4"},{app:"WhatsApp",file:"files/key",kb:0,hash:"r2q3b4a1"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:190,hash:"r3q4c5d2"},{app:"Contactos",file:"databases/contacts2.db",kb:48,hash:"r4a1b2c3"}],
+  ringo_q5:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1150,hash:"s1t2u3v4"},{app:"WhatsApp",file:"files/key",kb:0,hash:"s2t3v4u1"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:240,hash:"s3t4w5x2"},{app:"Contactos",file:"databases/contacts2.db",kb:55,hash:"s4u1v2w3"}],
+  vivo_y16:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1400,hash:"v1i2v3o4"},{app:"WhatsApp",file:"files/key",kb:0,hash:"v2o3v4i1"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:275,hash:"v3i4v5o2"},{app:"Contactos",file:"databases/contacts2.db",kb:65,hash:"v4o1v2i3"}],
+  vivo_y30:[{app:"WhatsApp",file:"databases/msgstore.db",kb:2200,hash:"y3o4a1b2"},{app:"WhatsApp",file:"databases/wa.db",kb:160,hash:"o4a1y3b2"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:380,hash:"a1b2o4y3"},{app:"Contactos",file:"databases/contacts2.db",kb:82,hash:"b2y3a1o4"}],
+  philips_s568:[{app:"WhatsApp",file:"databases/msgstore.db",kb:920,hash:"p1h2i3l4"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:210,hash:"h2i3l4p1"},{app:"Contactos",file:"databases/contacts2.db",kb:51,hash:"i3l4p1h2"}],
+  tcl_30se:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1050,hash:"t1c2l3s4"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:230,hash:"c2l3s4t1"},{app:"Contactos",file:"databases/contacts2.db",kb:58,hash:"l3s4t1c2"}],
+  pixel_4a:[{app:"WhatsApp",file:"databases/msgstore.db",kb:4100,hash:"a1b3c5d2"},{app:"WhatsApp",file:"databases/wa.db",kb:280,hash:"b2c4d6a1"},{app:"WhatsApp",file:"files/key",kb:0,hash:"c3d5a2b4"},{app:"Telegram",file:"files/cache4.db",kb:2100,hash:"d4a1b3c5"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:510,hash:"e5b2c4d1"},{app:"Contactos",file:"databases/contacts2.db",kb:140,hash:"f6c3d5a2"}],
+  pixel_6a:[{app:"WhatsApp",file:"databases/msgstore.db",kb:5200,hash:"a1d4c3b2"},{app:"Contactos",file:"databases/contacts2.db",kb:195,hash:"b2e5d4c3"}],
+  nothing_1:[{app:"WhatsApp",file:"databases/msgstore.db",kb:3800,hash:"c3f6e5d4"},{app:"WhatsApp",file:"files/key",kb:0,hash:"d4a1f6e5"},{app:"Telegram",file:"files/cache4.db",kb:2900,hash:"e5b2a1f6"},{app:"Instagram",file:"databases/direct.db",kb:650,hash:"f6c3b2a1"}],
+  blackview_bv6600:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1300,hash:"a1c3d4b2"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:280,hash:"b2d4e5c3"},{app:"Contactos",file:"databases/contacts2.db",kb:68,hash:"c3e5f6d4"}],
+  doogee_s58:[{app:"WhatsApp",file:"databases/msgstore.db",kb:900,hash:"d4f6a1e5"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:195,hash:"e5a1b2f6"},{app:"Contactos",file:"databases/contacts2.db",kb:52,hash:"f6b2c3a1"}],
+  tab_a8:[{app:"WhatsApp",file:"databases/msgstore.db",kb:2600,hash:"a1b4c6d3"},{app:"WhatsApp",file:"databases/wa.db",kb:200,hash:"b2c5d1e4"},{app:"Gmail",file:"databases/EmailProvider.db",kb:1100,hash:"c3d6e2f5"},{app:"Chrome",file:"app_chrome/Default/History",kb:320,hash:"d4e1f3a6"}],
+  xiaomi_pad5:[{app:"WhatsApp",file:"databases/msgstore.db",kb:5800,hash:"e5f2a4b1"},{app:"WhatsApp",file:"databases/wa.db",kb:390,hash:"f6a3b5c2"},{app:"Telegram",file:"files/cache4.db",kb:4200,hash:"a1b4c6d3"},{app:"Instagram",file:"databases/direct.db",kb:910,hash:"b2c5d1e4"},{app:"Chrome",file:"app_chrome/Default/History",kb:280,hash:"c3d6e2f5"}],
+  lenovo_m10:[{app:"WhatsApp",file:"databases/msgstore.db",kb:2100,hash:"d4e1f3a6"},{app:"Gmail",file:"databases/EmailProvider.db",kb:980,hash:"e5f2a4b1"},{app:"Chrome",file:"app_chrome/Default/History",kb:195,hash:"f6a3b5c2"},{app:"Contactos",file:"databases/contacts2.db",kb:88,hash:"a1b4d6c3"}],
+  meizu_m5:[{app:"WhatsApp",file:"databases/msgstore.db",kb:980,hash:"a1b2c3d4"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:340,hash:"b2c3d4a1"},{app:"Contactos",file:"databases/contacts2.db",kb:88,hash:"c3d4a1b2"}],
+  meizu_note9:[{app:"WhatsApp",file:"databases/msgstore.db",kb:2100,hash:"d4a1b2c3"},{app:"WhatsApp",file:"files/key",kb:0,hash:"a1c3d4b2"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:450,hash:"b2d4a1c3"},{app:"Telegram",file:"files/cache4.db",kb:880,hash:"c3a1b2d4"}],
+  blu_g80:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1100,hash:"d4b2c3a1"},{app:"WhatsApp",file:"files/key",kb:0,hash:"a1c3b2d4"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:260,hash:"b2d4c3a1"},{app:"Contactos",file:"databases/contacts2.db",kb:58,hash:"c3a1d4b2"}],
+  hyundai_e650:[{app:"WhatsApp",file:"databases/msgstore.db",kb:1350,hash:"d4b2a1c3"},{app:"WhatsApp",file:"files/key",kb:0,hash:"a1d4c3b2"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:290,hash:"b2a1d4c3"},{app:"Contactos",file:"databases/contacts2.db",kb:62,hash:"c3b2a1d4"}],
+  moto_edge_s:[{app:"WhatsApp",file:"databases/msgstore.db",kb:5200,hash:"a1d4c3b2"},{app:"WhatsApp",file:"databases/wa.db",kb:340,hash:"b2a1d4c3"},{app:"WhatsApp",file:"files/key",kb:0,hash:"c3b2a1d4"},{app:"Telegram",file:"files/cache4.db",kb:2800,hash:"d4c3b2a1"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:780,hash:"a1b2d4c3"},{app:"Instagram",file:"databases/direct.db",kb:620,hash:"b2c3a1d4"}],
+  moto_edge_20:[{app:"WhatsApp",file:"databases/msgstore.db",kb:2600,hash:"c3d4b2a1"},{app:"WhatsApp",file:"files/key",kb:0,hash:"d4a1c3b2"},{app:"SMS/MMS",file:"databases/mmssms.db",kb:510,hash:"a1b2d4c3"},{app:"Contactos",file:"databases/contacts2.db",kb:98,hash:"b2c3a1d4"}],
+  advance_l6:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:1200,hash:"a3b4c5d6e7f8"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"b4c5d6e7f8a3"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:280,hash:"c5d6e7f8a3b4"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:65,hash:"d6e7f8a3b4c5"},
+  ],
+  advance_octoq5:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:1750,hash:"e7f8a3b4c5d6"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:130,hash:"f8a3b4c5d6e7"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"a3b4c5d6e7f8"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:310,hash:"b4c5d6e7f8a3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:72,hash:"c5d6e7f8a3b4"},
+  ],
+  htc_m8:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:720,hash:"d6e7f8b4a3c5"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:1450,hash:"e7f8a3c5b4d6"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:195,hash:"f8a3b4d6c5e7"},
+    {app:"Chrome",file:"app_chrome/Default/History",kb:68,hash:"a3b4c5e7d6f8"},
+  ],
+  htc_u11:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:3100,hash:"b4c5d6f8e7a3"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:240,hash:"c5d6e7a3f8b4"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"d6e7f8b4a3c5"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:580,hash:"e7f8a3c5b4d6"},
+    {app:"Telegram",file:"files/cache4.db",kb:1200,hash:"f8a3b4d6c5e7"},
+  ],
+  bb_keyone:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:2200,hash:"a3c5d6b4f8e7"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:180,hash:"b4d6e7c5a3f8"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:420,hash:"c5e7f8d6b4a3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:145,hash:"d6f8a3e7c5b4"},
+    {app:"Gmail",file:"databases/EmailProvider.db",kb:890,hash:"e7a3b4f8d6c5"},
+  ],
+  bb_key2:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:3400,hash:"f8b4c5a3e7d6"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:265,hash:"a3c5d6b4f8e7"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"b4d6e7c5a3f8"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:650,hash:"c5e7f8d6b4a3"},
+    {app:"Gmail",file:"databases/EmailProvider.db",kb:1240,hash:"d6f8a3e7c5b4"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:220,hash:"e7a3b4f8d6c5"},
+  ],
+  poco_f1:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:4800,hash:"f8b4d6a3c5e7"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:310,hash:"a3c5e7b4d6f8"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"b4d6f8c5e7a3"},
+    {app:"Telegram",file:"files/cache4.db",kb:2400,hash:"c5e7a3d6f8b4"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:720,hash:"d6f8b4e7a3c5"},
+    {app:"Instagram",file:"databases/direct.db",kb:580,hash:"e7a3c5f8b4d6"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:165,hash:"f8b4d6a3c5e7"},
+  ],
+  poco_f3:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:5900,hash:"a3c5e7d6b4f8"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:380,hash:"b4d6f8e7c5a3"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"c5e7a3f8d6b4"},
+    {app:"Telegram",file:"files/cache4.db",kb:3100,hash:"d6f8b4a3e7c5"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:850,hash:"e7a3c5b4f8d6"},
+    {app:"Instagram",file:"databases/direct.db",kb:720,hash:"f8b4d6c5a3e7"},
+    {app:"Chrome",file:"app_chrome/Default/History",kb:220,hash:"a3c5e7d6b4f8"},
+  ],
+  samsung_s9:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:5600,hash:"f8a3e7c5b4d6"},
+    {app:"WhatsApp",file:"databases/wa.db",kb:340,hash:"a3b4f8d6c5e7"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"b4c5a3e7d6f8"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:890,hash:"c5d6b4f8e7a3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:185,hash:"d6e7c5a3f8b4"},
+    {app:"Telegram",file:"files/cache4.db",kb:2100,hash:"e7f8d6b4a3c5"},
+    {app:"Instagram",file:"databases/direct.db",kb:640,hash:"f8a3e7c5b4d6"},
+  ],
+  mt6739:[
+    {app:"WhatsApp",file:"databases/msgstore.db",kb:1800,hash:"e5c3d4a1f6b2"},
+    {app:"WhatsApp",file:"files/key",kb:0,hash:"f6d4a1c3e5b2"},
+    {app:"SMS/MMS",file:"databases/mmssms.db",kb:320,hash:"a1e5b2d4f6c3"},
+    {app:"Contactos",file:"databases/contacts2.db",kb:72,hash:"b2f6c3e5a1d4"},
+  ],
+};
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+let currentPanel = 2;
+
+function showPanel(n) {
+  for(let i=0;i<5;i++){
+    document.getElementById('panel-'+i).style.display='none';
+  }
+  document.getElementById('panel-'+n).style.display='';
+  currentPanel = n;
+  document.querySelectorAll('.ptab').forEach((t,i)=>{
+    t.classList.remove('active','done','warn');
+    if(i===n) t.classList.add('active');
+    else if(i<n) t.classList.add('done');
+  });
+}
+
+function updateProfile(){
+  const key = document.getElementById('sim-select').value;
+  const p = PROFILES[key];
+  if(!p) return;
+
+  // Device info
+  const cmap = {FISICA:'fisica',FS:'fs',LOGICA:'logica',NO_DISPONIBLE:'no'};
+  const ceilingClass = cmap[p.ceiling]||'no';
+  const riskMap = {c:'critico',a:'alto',m:'medio',b:'bajo'};
+  const pmonths = p.patch_months;
+  const riskKey = pmonths>36?'c':pmonths>18?'a':pmonths>6?'m':'b';
+  const riskLabel = {c:'CRÍTICO',a:'ALTO',m:'MEDIO',b:'BAJO'}[riskKey];
+  const riskIcon = {c:'⚠️',a:'⚠️',m:'⚡',b:'✅'}[riskKey];
+
+  document.getElementById('device-info').innerHTML = `
+    <div class="di"><div class="di-label">Fabricante</div><div class="di-val">${p.mfr}</div></div>
+    <div class="di"><div class="di-label">Modelo</div><div class="di-val">${p.model}</div></div>
+    <div class="di"><div class="di-label">Chipset</div><div class="di-val blue">${p.chipset}</div></div>
+    <div class="di"><div class="di-label">Familia</div><div class="di-val">${p.familia}</div></div>
+    <div class="di"><div class="di-label">Android</div><div class="di-val">${p.android}</div></div>
+    <div class="di"><div class="di-label">Match KB</div><div class="di-val green" style="font-size:11px">${p.kb_match}</div></div>
+  `;
+  document.getElementById('ceiling-wrap').innerHTML = `
+    <span class="ceiling ${ceilingClass}">
+      ${{fisica:'✓',fs:'~',logica:'~',no:'✗'}[ceilingClass]} ${p.ceiling}
+    </span>
+    <div style="font-size:11px;color:var(--txt2);margin-top:6px">${p.herramienta}</div>
+  `;
+
+  document.getElementById('patch-body').innerHTML = `
+    <div class="patch-risk">
+      <span class="risk-icon">${riskIcon}</span>
+      <div>
+        <div class="risk-label ${riskMap[riskKey]}">${riskLabel}</div>
+        <div class="risk-sub">${p.patch} · ${pmonths} meses de antigüedad</div>
+      </div>
+    </div>
+  `;
+
+  // Panel 0: ADB props
+  let propsHtml = '';
+  for(const [k,v] of Object.entries(p.props)){
+    propsHtml += `<div class="info-row"><span class="info-key">${k}</span><span class="info-val code">${v}</span></div>`;
+  }
+  document.getElementById('adb-props').innerHTML = propsHtml;
+  const fakeHash = btoa(p.chipset+p.patch+p.android).replace(/=/g,'').substring(0,32)+'...';
+  document.getElementById('props-hash').textContent = fakeHash;
+
+  // Panel 1: Security
+  const cipherMap = {
+    FBE:{imp:'ALTO',desc:'FBE activo. En AFU las claves CE están en memoria.'},
+    FDE:{imp:'MEDIO',desc:'FDE activo. Con PIN/patrón conocido descifrable post-extracción.'},
+    NINGUNO:{imp:'NULO',desc:'Sin cifrado. Datos directamente legibles en la imagen.'},
+    FBE_FUERTE:{imp:'MUY ALTO',desc:'FBE con Strongbox. Claves no extraíbles sin hardware.'},
+  };
+  const cInfo = cipherMap[p.cipher]||{imp:'?',desc:''};
+  const impColor={NULO:'green',BAJO:'green',MEDIO:'yellow',ALTO:'amber',MUY_ALTO:'red'}[cInfo.imp.replace(' ','_')]||'amber';
+
+  document.getElementById('sec-top').innerHTML = `
+    <div class="card" style="border-color:var(--border)">
+      <div class="card-body">
+        <div class="section-label">Estado de cifrado</div>
+        <div class="info-row"><span class="info-key">Tipo</span><span class="info-val" style="color:var(--${impColor})">${p.cipher}</span></div>
+        <div class="info-row"><span class="info-key">Impacto</span><span class="info-val">${cInfo.imp}</span></div>
+        <div style="font-size:11px;color:var(--txt2);margin-top:6px">${cInfo.desc}</div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--border)">
+      <div class="card-body">
+        <div class="section-label">CVEs aplicables</div>
+        <div class="info-row"><span class="info-key">Total</span><span class="info-val" style="color:var(--amber)">${p.cves.length}</span></div>
+        <div class="info-row"><span class="info-key">Con root</span><span class="info-val" style="color:var(--red)">${p.cves.filter(c=>c.tipo==='ROOT').length}</span></div>
+        <div class="info-row"><span class="info-key">Con acceso datos</span><span class="info-val">${p.cves.filter(c=>c.tipo==='DATOS').length}</span></div>
+        <div class="info-row"><span class="info-key">Riesgo parche</span><span class="info-val" style="color:var(--${riskMap[riskKey]})">${riskLabel}</span></div>
+      </div>
+    </div>
+  `;
+
+  let cveHtml = '';
+  for(const c of p.cves){
+    const tClass = c.tipo==='ROOT'?'root':c.tipo==='DATOS'?'datos':'med';
+    const rClass = c.rel==='MUY ALTA'?'muy-alta':c.rel==='ALTA'?'alta':'media';
+    cveHtml += `
+      <div class="cve-item">
+        <span class="cve-badge ${tClass}">${c.tipo}</span>
+        <div class="cve-info">
+          <div class="cve-id">${c.id} <span class="cve-rel ${rClass}">${c.rel}</span></div>
+          <div class="cve-name">${c.nombre}</div>
+          <div class="cve-name" style="margin-top:3px;font-style:italic">${c.nota}</div>
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById('cve-list').innerHTML = cveHtml;
+
+  // Panel 2: PE Engine
+  const peNota = p.cves.some(c=>c.tipo==='ROOT')
+    ? `🎯 CVE seleccionado automáticamente: <strong>${p.top_cve.id}</strong><br>Ruta disponible con adaptador implementado. Descargar PoC antes de conectar hardware.`
+    : `ℹ️ CVE seleccionado: <strong>${p.top_cve.id}</strong>. Acceso a datos sin root completo.`;
+  document.getElementById('pe-nota').innerHTML = peNota;
+
+  document.getElementById('pe-cve').innerHTML = `
+    <div class="card" style="border-color:var(--amber-dim)">
+      <div class="card-body">
+        <div class="info-row"><span class="info-key">CVE</span><span class="info-val" style="color:var(--amber)">${p.top_cve.id}</span></div>
+        <div class="info-row"><span class="info-key">Nombre</span><span class="info-val">${p.top_cve.nombre}</span></div>
+        <div class="info-row"><span class="info-key">Directorio PoC</span><span class="info-val code">adapters/pocs/${p.top_cve.id}/</span></div>
+        <div class="info-row"><span class="info-key">Pasos</span><span class="info-val">push → chmod +x → ADB shell → verificar uid</span></div>
+      </div>
+    </div>
+  `;
+
+  let routeHtml = '';
+  for(const s of p.route){
+    const nClass = s.obl?'obl':s.pe?'pe':'opt';
+    routeHtml += `
+      <div class="step">
+        <div class="step-num ${nClass}">${s.n}</div>
+        <div class="step-content">
+          <div class="step-type">${s.tipo}</div>
+          <div class="step-action">${s.action}</div>
+          ${s.warn?`<div class="step-warn">⚠ ${s.warn}</div>`:''}
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById('pe-route').innerHTML = routeHtml;
+
+  // Panel 3: Data Extractor
+  const files = EXTRACT_DATA[key]||[];
+  const totalKB = files.reduce((a,f)=>a+f.kb,0);
+  document.getElementById('extract-top').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div class="kb-stat"><div class="kb-num green">${files.length}</div><div class="kb-label">Archivos</div></div>
+      <div class="kb-stat"><div class="kb-num amber">${(totalKB/1024).toFixed(1)}</div><div class="kb-label">MB total</div></div>
+      <div class="kb-stat"><div class="kb-num" style="font-size:16px">${[...new Set(files.map(f=>f.app))].length}</div><div class="kb-label">Apps</div></div>
+    </div>
+  `;
+  let tableHtml = '';
+  for(const f of files){
+    tableHtml += `<tr>
+      <td><span style="color:var(--blue)">${f.app}</span></td>
+      <td style="font-family:monospace;font-size:11px">${f.file}</td>
+      <td>${f.kb>0?f.kb+' KB':'< 1 KB'}</td>
+      <td style="font-family:monospace;font-size:10px;color:var(--txt3)">${f.hash}...</td>
+    </tr>`;
+  }
+  document.getElementById('extract-table').innerHTML = tableHtml;
+  const globalHash = btoa(key+files.length+totalKB).replace(/=/g,'') + '0a1b2c3d';
+  document.getElementById('extract-hash').textContent = globalHash.padEnd(64,'0');
+}
+
+// ── API INTEGRATION ──────────────────────────────────────────────────────────
+const API_BASE = 'http://localhost:8765/api/v1';
+let currentMode = 'sim';
+let apiOnline   = false;
+let selectedSerial = null;
+let currentSessions = {};  // scan_id, analysis_id, pe_id, extract_id
+let ws = null;
+
+async function checkApi() {
+  try {
+    const r = await fetch(`${API_BASE}/status`, { signal: AbortSignal.timeout(2000) });
+    if (r.ok) {
+      const data = await r.json();
+      apiOnline = true;
+      const el = document.getElementById('api-status');
+      el.className = 'api-status online';
+      el.textContent = `API online · ${data.kb?.modelos || 0} modelos`;
+      return true;
+    }
+  } catch {}
+  apiOnline = false;
+  const el = document.getElementById('api-status');
+  el.className = 'api-status offline';
+  el.textContent = 'API offline';
+  return false;
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-sim').className  = 'mode-btn' + (mode==='sim'?' active':'');
+  document.getElementById('btn-real').className = 'mode-btn' + (mode==='real'?' active real':'');
+  document.getElementById('sim-panel').style.display    = mode==='sim' ? '' : 'none';
+  document.getElementById('real-panel').style.display   = mode==='real' ? '' : 'none';
+  document.getElementById('real-buttons').style.display = mode==='real' ? '' : 'none';
+  if (mode==='real') {
+    checkApi().then(ok => { if(ok) refreshDevices(); });
+    connectWs();
+  }
+}
+
+async function refreshDevices() {
+  const list = document.getElementById('device-list');
+  list.innerHTML = '<span style="color:var(--txt3);font-size:12px"><span class="spinner"></span>Buscando...</span>';
+  const ok = await checkApi();
+  if (!ok) {
+    list.innerHTML = '<span style="color:var(--red);font-size:12px">⚠ API offline. Iniciar server.py primero.</span>';
+    return;
+  }
+  try {
+    const r = await fetch(`${API_BASE}/devices`);
+    const data = await r.json();
+    if (!data.devices?.length) {
+      list.innerHTML = '<span style="color:var(--txt3);font-size:12px">No hay dispositivos ADB conectados.</span>';
+      return;
+    }
+    list.innerHTML = data.devices.map(d => `
+      <div class="dev-item ${selectedSerial===d.serial?'selected':''}" onclick="selectDevice('${d.serial}','${d.manufacturer} ${d.model}')">
+        <span class="ok-dot"></span>
+        <div>
+          <div class="dev-model">${d.manufacturer} ${d.model}</div>
+          <div class="dev-serial">${d.serial} · ${d.estado}</div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    list.innerHTML = `<span style="color:var(--red);font-size:12px">Error: ${e.message}</span>`;
+  }
+}
+
+function selectDevice(serial, label) {
+  selectedSerial = serial;
+  document.getElementById('btn-scan-real').disabled = false;
+  refreshDevices(); // re-render para highlight
+  addLog(`info`, `Dispositivo seleccionado: ${label} [${serial}]`);
+}
+
+function addLog(type, msg) {
+  const box = document.getElementById('log-box');
+  document.getElementById('log-panel').style.display = '';
+  const line = document.createElement('div');
+  line.className = type;
+  line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function runPipelineReal() {
+  if (!selectedSerial && currentMode === 'real') {
+    alert('Seleccioná un dispositivo primero.');
+    return;
+  }
+
+  document.getElementById('btn-scan-real').disabled = true;
+  document.getElementById('btn-scan-real').innerHTML = '<span class="spinner"></span>Ejecutando...';
+  currentSessions = {};
+
+  try {
+    // 1. Device Scanner
+    addLog('info', 'Paso 1/4 — Device Scanner...');
+    const scanR = await fetch(`${API_BASE}/scan`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ serial: selectedSerial })
+    });
+    if (!scanR.ok) throw new Error(`Scanner: ${await scanR.text()}`);
+    const scanData = await scanR.json();
+    currentSessions.scan_id = scanData.session_id;
+    addLog('ok', `Scanner OK · sesión: ${scanData.session_id}`);
+    renderFromApiData(scanData.data, 'scan');
+
+    // 2. Security Analyzer
+    addLog('info', 'Paso 2/4 — Security Analyzer...');
+    const analR = await fetch(`${API_BASE}/analyze/${scanData.session_id}`, { method:'POST' });
+    if (!analR.ok) throw new Error(`Analyzer: ${await analR.text()}`);
+    const analData = await analR.json();
+    currentSessions.analysis_id = analData.session_id;
+    addLog('ok', `Analyzer OK · sesión: ${analData.session_id}`);
+    renderFromApiData(analData.data, 'analysis');
+
+    // 3. PE Engine (dry-run)
+    addLog('info', 'Paso 3/4 — PE Engine (dry-run)...');
+    const peR = await fetch(`${API_BASE}/pe`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ security_session_id: analData.session_id, dry_run: true, serial: selectedSerial })
+    });
+    if (!peR.ok) throw new Error(`PE Engine: ${await peR.text()}`);
+    const peData = await peR.json();
+    currentSessions.pe_id = peData.session_id;
+    addLog('ok', `PE Engine OK · sesión: ${peData.session_id}`);
+    renderFromApiData(peData.data, 'pe');
+
+    // 4. Data Extractor (simulado en dry-run)
+    addLog('info', 'Paso 4/4 — Data Extractor (dry-run)...');
+    const exR = await fetch(`${API_BASE}/extract`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ pe_session_id: peData.session_id, serial: selectedSerial })
+    });
+    if (!exR.ok) throw new Error(`Extractor: ${await exR.text()}`);
+    const exData = await exR.json();
+    currentSessions.extract_id = exData.session_id;
+    addLog('ok', `Extractor OK · sesión: ${exData.session_id}`);
+    renderFromApiData(exData.data, 'extract');
+
+    addLog('ok', '✓ Pipeline completo. Revisá los paneles.');
+    showPanel(2);
+  } catch(e) {
+    addLog('err', `Error: ${e.message}`);
+  } finally {
+    document.getElementById('btn-scan-real').disabled = false;
+    document.getElementById('btn-scan-real').innerHTML = '▶ Iniciar pipeline';
+  }
+}
+
+function renderFromApiData(data, type) {
+  // Mapea la respuesta de la API al mismo renderizado que usa la simulación
+  if (type === 'scan' || type === 'analysis' || type === 'pe') {
+    // Construir un profile sintético desde la respuesta real
+    const p = {
+      mfr: data.manufacturer || data.dispositivo?.manufacturer || '?',
+      model: data.model || data.dispositivo?.model || '?',
+      chipset: data.chipset || data.dispositivo?.chipset || '?',
+      marketing: data.chipset || '?',
+      android: data.android_version || data.dispositivo?.android || '?',
+      patch: data.security_patch || data.dispositivo?.parche || '?',
+      familia: data.familia || '?',
+      ceiling: data.acquisition_ceiling || data.adquisicion?.ceiling || 'DESCONOCIDO',
+      cipher: data.cifrado?.tipo || 'DESCONOCIDO',
+      herramienta: data.herramienta || data.adquisicion?.herramienta || '?',
+      kb_match: data.kb_match || `${data.manufacturer} ${data.model}`,
+      patch_months: data.patch_age_months || 0,
+      props: data.props || {},
+      cves: (data.cves_aplicables || []).map(c => ({
+        id: c.id || c,
+        nombre: c.nombre || c,
+        tipo: c.root_posible ? 'ROOT' : 'DATOS',
+        rel: c.relevancia_forense || 'MEDIA',
+        nota: c.notas_forense || ''
+      })),
+      top_cve: data.cve_seleccionado
+        ? { id: data.cve_seleccionado, nombre: data.cve_seleccionado }
+        : (data.cves_aplicables?.[0] ? { id: data.cves_aplicables[0].id || data.cves_aplicables[0], nombre: '' } : null),
+      route: data.ruta_adquisicion || [],
+    };
+
+    // Actualizar las cards del sidebar con datos reales
+    const cmap = {FISICA:'fisica',FS:'fs',LOGICA:'logica',NO_DISPONIBLE:'no'};
+    const ceilingClass = cmap[p.ceiling] || 'no';
+    document.getElementById('device-info').innerHTML = `
+      <div class="di"><div class="di-label">Fabricante</div><div class="di-val">${p.mfr}</div></div>
+      <div class="di"><div class="di-label">Modelo</div><div class="di-val">${p.model}</div></div>
+      <div class="di"><div class="di-label">Chipset</div><div class="di-val blue">${p.chipset}</div></div>
+      <div class="di"><div class="di-label">Android</div><div class="di-val">${p.android}</div></div>
+      <div class="di"><div class="di-label">Parche</div><div class="di-val">${p.patch}</div></div>
+      <div class="di"><div class="di-label">Match KB</div><div class="di-val green" style="font-size:11px">${p.kb_match}</div></div>
+    `;
+    document.getElementById('ceiling-wrap').innerHTML = `
+      <span class="ceiling ${ceilingClass}">${p.ceiling}</span>
+      <div style="font-size:11px;color:var(--txt2);margin-top:6px">${p.herramienta}</div>
+    `;
+
+    const pmonths = p.patch_months;
+    const riskKey = pmonths>36?'c':pmonths>18?'a':pmonths>6?'m':'b';
+    const riskMap = {c:'critico',a:'alto',m:'medio',b:'bajo'};
+    const riskLabel = {c:'CRÍTICO',a:'ALTO',m:'MEDIO',b:'BAJO'}[riskKey];
+    document.getElementById('patch-body').innerHTML = `
+      <div class="patch-risk">
+        <span class="risk-icon">${{c:'⚠️',a:'⚠️',m:'⚡',b:'✅'}[riskKey]}</span>
+        <div>
+          <div class="risk-label ${riskMap[riskKey]}">${riskLabel}</div>
+          <div class="risk-sub">${p.patch} · ${pmonths} meses</div>
+        </div>
+      </div>
+    `;
+
+    // Sesión IDs en el panel 0
+    if (data._api_session_id) {
+      let propsHtml = '';
+      for (const [k,v] of Object.entries(p.props || {})) {
+        propsHtml += `<div class="info-row"><span class="info-key">${k}</span><span class="info-val code">${v}</span></div>`;
+      }
+      document.getElementById('adb-props').innerHTML = propsHtml || '<span style="color:var(--txt3)">Props reales del dispositivo.</span>';
+      document.getElementById('props-hash').textContent = `API session: ${data._api_session_id} · ${data._api_timestamp?.slice(0,19) || ''}Z`;
+    }
+  }
+}
+
+function connectWs() {
+  if (ws && ws.readyState === WebSocket.OPEN) return;
+  try {
+    ws = new WebSocket('ws://localhost:8765/ws/progress');
+    ws.onopen = () => addLog('ok', 'WebSocket conectado al servidor.');
+    ws.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.type === 'output' && msg.stream === 'stdout') {
+          addLog('info', `[${msg.module}] ${msg.line}`);
+        } else if (msg.type === 'done') {
+          addLog(msg.returncode === 0 ? 'ok' : 'err',
+            `[${msg.module}] finalizado (rc=${msg.returncode})`);
+        }
+      } catch {}
+    };
+    ws.onerror = () => addLog('err', 'WebSocket error.');
+    ws.onclose = () => { ws = null; };
+  } catch {}
+}
+
+// Chequear API al cargar
+checkApi();
+setInterval(checkApi, 10000);  // ping cada 10s
+
+// Init
+updateProfile();
+showPanel(2);
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# EVIDEX BYPASS — Dependencias Python
+# Instalar con: pip install -r requirements.txt --break-system-packages
+
+# API server
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+aiofiles>=23.2.1
+pydantic>=2.0.0
+
+# USB / ADB
+pyusb>=1.2.1
+
+# Verificación de licencia (Ed25519)
+cryptography>=41.0.0
+
+# Utilidades
+python-multipart>=0.0.9

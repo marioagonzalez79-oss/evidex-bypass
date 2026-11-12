@@ -1,0 +1,4100 @@
+{
+  "_meta": {
+    "version": "2.5",
+    "fecha": "2026-11-11",
+    "descripcion": "Knowledge Base de chipsets para EVIDEX BYPASS. Define rutas de adquisicion disponibles, nivel maximo alcanzable, estado de cifrado tipico y restricciones conocidas por chipset y rango de Android.",
+    "niveles_adquisicion": {
+      "LOGICA": "Backup ADB, exportacion de apps. No accede a /data directamente.",
+      "FS": "Sistema de archivos: accede a /data via ADB root o agente forense.",
+      "FISICA": "Imagen bit a bit de la particion userdata completa.",
+      "NO_DISPONIBLE": "No existe ruta conocida sin herramienta propietaria."
+    },
+    "estados_cifrado": {
+      "NINGUNO": "Sin cifrado activo. Datos legibles en la imagen.",
+      "FDE": "Full Disk Encryption. Cifrado de particion completa. Descifrable con PIN/patron conocido.",
+      "FBE": "File Based Encryption. Cifrado por archivo. Requiere claves del TEE y estado AFU.",
+      "FBE_FUERTE": "FBE con Strongbox / TitanM. Claves no extraibles sin el hardware original."
+    },
+    "total_chipsets": 152
+  },
+  "mediatek": [
+    {
+      "chipset": "MT6580",
+      "marketing": "MediaTek MT6580",
+      "arquitectura": "ARM Cortex-A7 32-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung",
+        "Lenovo",
+        "Alcatel",
+        "ZTE",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 en este chipset raramente tenia cifrado activo por defecto.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria, o test point segun modelo",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6582",
+      "marketing": "MediaTek MT6582",
+      "arquitectura": "ARM Cortex-A7 32-bit",
+      "años": "2013-2016",
+      "android_tipico": [
+        "4.2",
+        "4.4",
+        "5.1"
+      ],
+      "fabricantes_comunes": [
+        "Lenovo",
+        "Alcatel",
+        "Huawei",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4.x sin cifrado por defecto en casi todos los modelos.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria, o cortocircuito test point",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6735",
+      "marketing": "MediaTek MT6735 / MT6735M / MT6735P",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2015-2018",
+      "android_tipico": [
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Lenovo",
+        "Alcatel",
+        "Wiko",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Cifrado opcional en Android 6, generalmente no activado en gama baja.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6737",
+      "marketing": "MediaTek MT6737 / MT6737T",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.1"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J2 Pro)",
+        "Lenovo",
+        "Alcatel",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "Android 7+ activa FDE por defecto. Con PIN/patron conocido la imagen es descifrable. Sin credencial, imagen fisicamente obtenida pero cifrada.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6750",
+      "marketing": "MediaTek MT6750 / MT6750T",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A series baja gama)",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "Mismo escenario que MT6737: FDE activo en Android 7+.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6755",
+      "marketing": "MediaTek Helio P10",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Meizu",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE tipico en Android 7.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6757",
+      "marketing": "MediaTek Helio P20",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "varios chinos",
+        "Meizu"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE activo. Android 8 en algunos modelos empieza a usar FBE.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6763",
+      "marketing": "MediaTek Helio P23",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": "PARCIAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "Android 9 introduce FBE. Imagen fisica obtenible pero datos cifrados sin estado AFU.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "advertencia": "DAA/SLA presente en algunos firmwares. Verificar version antes de intentar."
+    },
+    {
+      "chipset": "MT6771",
+      "marketing": "MediaTek Helio P60 / P70",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "varios chinos",
+        "Realme"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE. BROM bloqueado por DAA en la mayoria de firmwares.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Requiere bypass DAA, no disponible publicamente para todos los modelos",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Alta probabilidad de fracaso en BROM sin herramienta propietaria."
+    },
+    {
+      "chipset": "MT6739",
+      "marketing": "MediaTek Helio A22",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A10s, M10)",
+        "Xiaomi (Redmi 7A)",
+        "OPPO A5s",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. Android 8.1 puede tener FDE. Imagen fisica posible.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "notas_region": "Muy comun en gama baja vendida en Argentina. Alta probabilidad en causas."
+    },
+    {
+      "chipset": "MT6762",
+      "marketing": "MediaTek Helio P22",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A10, A20s)",
+        "Xiaomi (Redmi 8)",
+        "OPPO A11",
+        "Realme C2"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. Android 8.1 con FDE. Imagen fisica obtenible.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "notas_region": "Uno de los mas frecuentes en equipos usados de bajo costo en la region."
+    },
+    {
+      "chipset": "MT6765",
+      "marketing": "MediaTek Helio G35 / P35",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2019-2022",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi 9A/9C)",
+        "OPPO A15",
+        "Realme C11/C15"
+      ],
+      "brom_accesible": true,
+      "daa_sla": "PARCIAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE. Imagen fisica posible en modelos sin DAA activo.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "advertencia": "DAA presente en algunos firmwares. Verificar por modelo antes de intentar."
+    },
+    {
+      "chipset": "MT6768",
+      "marketing": "MediaTek Helio G85 / G80",
+      "arquitectura": "ARM Cortex-A55 + A75 64-bit",
+      "años": "2020-2023",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A32 MT)",
+        "Xiaomi (Redmi Note 9)",
+        "Realme 7"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE fuerte con TEE. BROM bloqueado por DAA en la mayoria.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "BROM bloqueado en la mayoria de firmwares",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "DAA/SLA activo en casi todos los modelos. Sin herramienta propietaria el techo es LOGICA."
+    },
+    {
+      "chipset": "MT6833",
+      "marketing": "MediaTek Dimensity 700",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2020-2023",
+      "android_tipico": [
+        "10",
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A32 5G)",
+        "Xiaomi (Redmi Note 10 5G)",
+        "Realme 8 5G"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Claves no extraibles sin hardware original.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno con DAA activo. Sin ruta publica de adquisicion fisica."
+    },
+    {
+      "chipset": "MT6853",
+      "marketing": "MediaTek Dimensity 720",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A42 5G)",
+        "Xiaomi (Redmi Note 9 5G)"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Sin ruta publica.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. Sin ruta de adquisicion fisica publica."
+    },
+    {
+      "chipset": "MT6761",
+      "marketing": "MediaTek Helio A22 (variante)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Y5 2019)",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "Practicamente identico al MT6739 en comportamiento BROM. FBE en Android 9+.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "notas_region": "Usado por Huawei Y5 2019. Perfil forense identico a MT6739."
+    },
+    {
+      "chipset": "MT6580A",
+      "marketing": "MediaTek MT6580A",
+      "arquitectura": "ARM Cortex-A7 32-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J2 2016)",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 sin cifrado por defecto.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6753",
+      "marketing": "MediaTek MT6753",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "Alcatel",
+        "ZTE",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 raramente con cifrado activo.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6771V",
+      "marketing": "MediaTek Helio P60T",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.1",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "OPPO A5s",
+        "Realme 3",
+        "varios chinos"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE. DAA activo en la mayoria.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "BROM bloqueado en la mayoria de firmwares",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "DAA activo. Sin ruta publica efectiva."
+    },
+    {
+      "chipset": "MT6833P",
+      "marketing": "MediaTek Dimensity 700T",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A23 5G)",
+        "varios"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity moderno. Sin ruta publica.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Chipset moderno. Sin ruta de adquisicion fisica publica."
+    },
+    {
+      "chipset": "MT6893",
+      "marketing": "MediaTek Dimensity 1200",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 10 Pro 5G)",
+        "Realme GT",
+        "OPPO Reno 5"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Dimensity de alta gama. Sin ruta publica.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno de alta gama. Sin ninguna ruta publica de adquisicion."
+    },
+    {
+      "chipset": "MT6769",
+      "marketing": "MediaTek Helio G85 (variante G88)",
+      "arquitectura": "ARM Cortex-A75 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 11)",
+        "Samsung (A13 MT variante)",
+        "Realme 9i"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE. DAA activo en la mayoria de firmwares.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "BROM bloqueado por DAA en firmwares comerciales",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "DAA activo. Sin ruta publica efectiva sin herramienta propietaria."
+    },
+    {
+      "chipset": "MT6580M",
+      "marketing": "MediaTek MT6580M",
+      "arquitectura": "ARM Cortex-A7 32-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "varios chinos de gama muy baja",
+        "Alcatel Pixi"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 sin cifrado. Variante de bajo costo del MT6580.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6785",
+      "marketing": "MediaTek Helio G90T",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 8 Pro)",
+        "OPPO A93"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": "PARCIAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. BROM accesible en algunos firmwares sin DAA.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria (verificar por firmware)",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "advertencia": "DAA presente en algunos firmwares. Verificar version antes de intentar.",
+      "notas_region": "Redmi Note 8 Pro muy popular en Argentina 2020-2021."
+    },
+    {
+      "chipset": "MT6781",
+      "marketing": "MediaTek Helio G96",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 11S)",
+        "Realme 9 Pro+",
+        "OPPO A96"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE. DAA activo en la mayoria de firmwares.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "BROM bloqueado en la mayoria de firmwares",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "DAA/SLA activo. Sin ruta publica efectiva sin herramienta propietaria."
+    },
+    {
+      "chipset": "MT6877",
+      "marketing": "MediaTek Dimensity 900",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 11 Pro 5G)",
+        "OPPO Reno 7",
+        "Realme 9 5G"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Dimensity de gama media-alta.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. DAA activo. Sin ruta publica de adquisicion."
+    },
+    {
+      "chipset": "MT6891",
+      "marketing": "MediaTek Dimensity 1100",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2021-2022",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Realme GT Neo",
+        "OPPO Find X3 Lite",
+        "varios"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Dimensity gama media-alta.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. Sin ruta publica."
+    },
+    {
+      "chipset": "MT6779",
+      "marketing": "MediaTek Helio P90",
+      "arquitectura": "ARM Cortex-A75 + A55 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "OPPO A11x",
+        "Realme XT",
+        "varios chinos gama media"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": "PARCIAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. BROM accesible en firmwares sin DAA.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria (verificar por firmware)",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "advertencia": "DAA presente en algunos firmwares. Verificar version antes de intentar."
+    },
+    {
+      "chipset": "MT6873",
+      "marketing": "MediaTek Dimensity 800",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi 10X)",
+        "OPPO A93 5G",
+        "Samsung (A32 5G variante)"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity con FBE y Strongbox.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. DAA activo. Sin ruta publica."
+    },
+    {
+      "chipset": "MT6757V",
+      "marketing": "MediaTek Helio P20 (variante)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 5A)",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Variante del MT6757.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6753T",
+      "marketing": "MediaTek MT6753T",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "Lenovo (Vibe K5 Note)",
+        "varios chinos gama media"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 sin cifrado por defecto.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6761D",
+      "marketing": "MediaTek Helio A20",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Alcatel 1SE",
+        "TCL 20Y",
+        "varios gama muy baja"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 10+. Mismo perfil BROM que MT6761.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "notas_region": "Presente en equipos de planes prepago de operadoras argentinas."
+    },
+    {
+      "chipset": "MT6572",
+      "marketing": "MediaTek MT6572",
+      "arquitectura": "ARM Cortex-A7 32-bit",
+      "años": "2013-2015",
+      "android_tipico": [
+        "4.2",
+        "4.4"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (Core 2)",
+        "varios chinos gama muy baja"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4.x sin cifrado.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "notas_region": "Aparece en causas historicas 2015-2018. Android 4.x totalmente sin cifrado."
+    },
+    {
+      "chipset": "MT6592",
+      "marketing": "MediaTek MT6592 (Octa-core)",
+      "arquitectura": "ARM Cortex-A7 64-bit",
+      "años": "2014-2016",
+      "android_tipico": [
+        "4.4",
+        "5.0",
+        "5.1"
+      ],
+      "fabricantes_comunes": [
+        "Meizu MX3",
+        "varios chinos gama media"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4-5 sin cifrado por defecto.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6752",
+      "marketing": "MediaTek MT6752",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.0",
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "Lenovo (A7000)",
+        "Meizu M2 Note",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 generalmente sin cifrado activo.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6797",
+      "marketing": "MediaTek Helio X20 / X25",
+      "arquitectura": "ARM Cortex-A72 + A53 (deca-core) 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Meizu Pro 6",
+        "Xiaomi (Mi 5X variante)",
+        "varios chinos gama media-alta"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6755S",
+      "marketing": "MediaTek Helio P10S",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "OPPO A37",
+        "varios chinos"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "Variante del Helio P10. FDE en Android 7.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6763T",
+      "marketing": "MediaTek Helio P23T",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "varios chinos gama media"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. Variante del MT6763.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin bateria",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ]
+    },
+    {
+      "chipset": "MT6885",
+      "marketing": "MediaTek Dimensity 1000L",
+      "arquitectura": "ARM Cortex-A77 + A55 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "OPPO Reno4",
+        "Realme X7",
+        "varios"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity con Strongbox.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. DAA activo. Sin ruta publica."
+    },
+    {
+      "chipset": "MT6889",
+      "marketing": "MediaTek Dimensity 1000",
+      "arquitectura": "ARM Cortex-A77 + A55 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Mi 10 Lite 5G)",
+        "varios flagship MT"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity flagship. Sin ruta publica.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity flagship. Sin ruta publica."
+    },
+    {
+      "chipset": "MT6895",
+      "marketing": "MediaTek Dimensity 8100",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 11 Pro 5G variante)",
+        "Realme GT Neo 3"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity gama alta. Sin ruta publica.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno gama alta. Sin ruta publica."
+    },
+    {
+      "chipset": "MT6983",
+      "marketing": "MediaTek Dimensity 9000",
+      "arquitectura": "ARM Cortex-X2 + A710 + A510 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "OPPO Find X5",
+        "Xiaomi 12 Pro",
+        "varios flagship"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity flagship 2022. Sin ruta publica.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity 9000 flagship. Sin ruta publica."
+    },
+    {
+      "chipset": "MT6771T",
+      "marketing": "MediaTek Helio P70T",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Realme 3 Pro",
+        "OPPO A9 2020",
+        "varios"
+      ],
+      "brom_accesible": "CONDICIONAL",
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "DAA activo en la mayoria. FBE con TEE.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "BROM bloqueado en la mayoria de firmwares",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "DAA activo en casi todos los firmwares comerciales."
+    },
+    {
+      "chipset": "MT6761G",
+      "marketing": "MediaTek Helio A20 (variante G)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2020-2023",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Infinix Hot 10 Play",
+        "Tecno Pop 5",
+        "ITEL A37"
+      ],
+      "brom_accesible": true,
+      "daa_sla": false,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 10+. Mismo perfil BROM que MT6761/MT6761D.",
+      "herramienta": "MTKClient",
+      "activacion_brom": "Volumen abajo + USB sin batería",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/mtkclient"
+      ],
+      "notas_region": "Transsion group (Infinix/Tecno/ITEL). Muy común en gama muy baja 2021-2023."
+    },
+    {
+      "chipset": "MT6877V",
+      "marketing": "MediaTek Dimensity 920",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Realme 9 Pro 5G",
+        "OPPO Reno 7",
+        "Xiaomi 11 Lite NE 5G"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity gama media. FBE con Strongbox.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. DAA activo. Sin ruta pública."
+    },
+    {
+      "chipset": "MT6886",
+      "marketing": "MediaTek Dimensity 7200 Pro",
+      "arquitectura": "ARM Cortex-A715 + A510 64-bit",
+      "años": "2023-2024",
+      "android_tipico": [
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "Nothing Phone 2a",
+        "Realme 11 Pro",
+        "OPPO Reno 11"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity moderno 2023. FBE con Strongbox.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity moderno. DAA activo. Sin ruta pública."
+    },
+    {
+      "chipset": "MT6789",
+      "marketing": "MediaTek Helio G99",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit (6nm)",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi Redmi Note 12",
+        "vivo Y78+",
+        "OPPO A78 5G",
+        "Realme 10 4G",
+        "Redmi Pad SE"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Helio G99 moderno 6nm. DAA activo. FBE con Strongbox. Sin ruta pública.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible públicamente",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Helio G99: DAA activo desde firmware de fábrica. Sin ruta física pública. Muy común desde 2022.",
+      "notas_region": "Uno de los chipsets más frecuentes en dispositivos vendidos en Argentina 2022-2024."
+    },
+    {
+      "chipset": "MT6833",
+      "marketing": "MediaTek Dimensity 700",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Samsung Galaxy A32 5G",
+        "Realme 8 5G",
+        "vivo Y33s/Y55",
+        "OPPO A54 5G",
+        "Nokia G60"
+      ],
+      "brom_accesible": false,
+      "daa_sla": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Dimensity. DAA activo. Sin ruta pública.",
+      "herramienta": "N/A sin herramienta propietaria",
+      "activacion_brom": "No disponible",
+      "programmer_requerido": false,
+      "validado_laboratorio": false,
+      "advertencia": "Dimensity 700: DAA activo. Sin ruta física pública. Frecuente en gama media baja 5G.",
+      "notas_region": "Muy presente en Argentina desde 2021 en modelos 5G de múltiples marcas."
+    }
+  ],
+  "qualcomm": [
+    {
+      "chipset": "MSM8909",
+      "marketing": "Snapdragon 210",
+      "arquitectura": "ARM Cortex-A7 32-bit",
+      "años": "2015-2018",
+      "android_tipico": [
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J1/J2)",
+        "Alcatel",
+        "varios"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Gama muy baja, cifrado raramente activo en Android 5-6.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + Vol arriba + USB, o test point segun modelo",
+      "programmer_publico": true,
+      "notas_programmer": "Programmers publicos disponibles para modelos comunes.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8916",
+      "marketing": "Snapdragon 410",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2014-2017",
+      "android_tipico": [
+        "4.4",
+        "5.0",
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A3/A5 2015)",
+        "LG",
+        "HTC",
+        "Motorola"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4-5 sin cifrado por defecto. Android 6 opcional.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": true,
+      "notas_programmer": "Amplia disponibilidad de programmers para este chipset.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8929",
+      "marketing": "Snapdragon 415",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0"
+      ],
+      "fabricantes_comunes": [
+        "HTC",
+        "varios"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Cifrado raramente activo en estos modelos.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos, verificar por fabricante.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8939",
+      "marketing": "Snapdragon 615 / 616",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2014-2017",
+      "android_tipico": [
+        "5.0",
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A7 2015)",
+        "HTC",
+        "LG",
+        "Motorola"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible en Android 6+. Con PIN conocido descifrable.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Programmers publicos disponibles para los modelos principales.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8953",
+      "marketing": "Snapdragon 625 / 626",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (G5/G5S)",
+        "Xiaomi",
+        "ASUS"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE activo en la mayoria. Android 9 puede tener FBE.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o combinacion especifica por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para Motorola G5/G5S. Otros modelos verificar.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8974",
+      "marketing": "Snapdragon 800 / 801",
+      "arquitectura": "ARM Krait 400 32-bit",
+      "años": "2013-2016",
+      "android_tipico": [
+        "4.2",
+        "4.4",
+        "5.0",
+        "5.1"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S4/S5)",
+        "LG G2/G3",
+        "Sony Z2/Z3",
+        "HTC One M8"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4-5 sin cifrado por defecto en la gran mayoria.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico por modelo",
+      "programmer_publico": true,
+      "notas_programmer": "Programmers bien documentados para los modelos principales.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8996",
+      "marketing": "Snapdragon 820 / 821",
+      "arquitectura": "ARM Kryo 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S7)",
+        "LG G5/G6",
+        "OnePlus 3"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE activo. Con PIN conocido descifrable. Sin PIN, imagen cifrada.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point o combinacion por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos. LG y OnePlus mejor documentados.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM450",
+      "marketing": "Snapdragon 450",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2020",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A6)",
+        "Xiaomi",
+        "ASUS"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "Android 9 con FBE. Imagen fisica posible pero datos cifrados sin AFU.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Dependiente del fabricante. Verificar antes de intentar.",
+      "validado_laboratorio": false,
+      "advertencia": "Verificar disponibilidad de programmer para el modelo especifico."
+    },
+    {
+      "chipset": "SDM430",
+      "marketing": "Snapdragon 430",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G5)",
+        "Nokia 5/6",
+        "Samsung (J7 Pro)",
+        "Alcatel"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Con PIN conocido descifrable.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point segun modelo",
+      "programmer_publico": true,
+      "notas_programmer": "Disponible para Motorola G5 y otros modelos principales.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Motorola G5 muy comun en Argentina. Alta probabilidad de tener programmer disponible."
+    },
+    {
+      "chipset": "SDM435",
+      "marketing": "Snapdragon 435",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G5s)",
+        "Xiaomi (Redmi 4X)",
+        "Nokia"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE tipico en Android 7+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Disponible para Motorola G5s y Xiaomi Redmi 4X.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM439",
+      "marketing": "Snapdragon 439",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G8 Play)",
+        "Xiaomi (Redmi 8)",
+        "Nokia 4.2"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. Imagen fisica posible, datos cifrados sin AFU.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Motorola. Verificar por modelo exacto.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Motorola G8 Play muy vendido en Argentina."
+    },
+    {
+      "chipset": "SDM636",
+      "marketing": "Snapdragon 636",
+      "arquitectura": "ARM Kryo 260 64-bit",
+      "años": "2017-2020",
+      "android_tipico": [
+        "7.1",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 5)",
+        "Nokia 7.1",
+        "ASUS ZenFone Max Pro M1"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9. Android 8 con FDE en algunos modelos.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para Xiaomi Redmi Note 5. Otros modelos verificar.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM660",
+      "marketing": "Snapdragon 660",
+      "arquitectura": "ARM Kryo 260 64-bit",
+      "años": "2017-2020",
+      "android_tipico": [
+        "7.1",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G7 Plus)",
+        "Xiaomi (Mi A2)",
+        "Nokia 7 Plus"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE tipico en Android 9. FDE en Android 8 en algunos modelos.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point segun modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para Motorola G7 Plus y algunos Xiaomi.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Motorola G7 Plus muy comun en la region."
+    },
+    {
+      "chipset": "SDM845",
+      "marketing": "Snapdragon 845",
+      "arquitectura": "ARM Kryo 385 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.0",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S9/S9+)",
+        "Xiaomi (Mi 8)",
+        "OnePlus 6",
+        "LG G7"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE fuerte. Imagen fisica posible pero datos cifrados sin AFU.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Xiaomi y OnePlus. Samsung S9 con Knox requiere herramienta propietaria.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "advertencia": "Samsung S9 con Knox: sin ruta publica efectiva. Modelos sin Knox (Xiaomi, OnePlus): imagen fisica posible."
+    },
+    {
+      "chipset": "SM6115",
+      "marketing": "Snapdragon 662",
+      "arquitectura": "ARM Kryo 260 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G30/G50)",
+        "Xiaomi (Redmi 9T)"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Strongbox en modelos 2021+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Algunos programmers disponibles pero compatibilidad limitada.",
+      "validado_laboratorio": false,
+      "advertencia": "Chipset moderno: sin garantia de ruta fisica efectiva. Verificar por modelo."
+    },
+    {
+      "chipset": "SM6125",
+      "marketing": "Snapdragon 665",
+      "arquitectura": "ARM Kryo 260 64-bit",
+      "años": "2019-2022",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G9 Play)",
+        "Nokia"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen fisica posible con programmer disponible.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Motorola. Verificar por modelo exacto.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8937",
+      "marketing": "Snapdragon 430 (variante MSM8937)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (G5, G6 Play)",
+        "Xiaomi (Redmi 4A)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Amplia disponibilidad para Motorola G5/G6 Play.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "ro.board.platform reporta msm8937. Referenciado por varios modelos Motorola."
+    },
+    {
+      "chipset": "MSM8940",
+      "marketing": "Snapdragon 435 (variante MSM8940)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (G5s)",
+        "Xiaomi (Redmi 4X variante)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Disponible para Motorola G5s.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM632",
+      "marketing": "Snapdragon 632",
+      "arquitectura": "ARM Kryo 250 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G7 Play, G7 Power)",
+        "Xiaomi (Mi A3)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. FDE en Android 8.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para Motorola G7 Play/Power. Verificar por modelo.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Moto G7 Play muy comun en Argentina."
+    },
+    {
+      "chipset": "SDM460",
+      "marketing": "Snapdragon 460",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto E7 Plus, G10)",
+        "OPPO A53"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen fisica con programmer disponible.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Motorola.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM450V",
+      "marketing": "Snapdragon 450 (variante SDM450)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2020",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A6)",
+        "Xiaomi (Redmi S2)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Verificar por modelo especifico.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM732G",
+      "marketing": "Snapdragon 732G",
+      "arquitectura": "ARM Kryo 470 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (POCO X3 NFC, POCO X3 Pro variante)",
+        "Redmi Note 9 Pro Max"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen fisica posible con programmer disponible. Datos cifrados sin AFU.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + Vol arriba + USB (combinacion especifica POCO)",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible y documentado para POCO X3 NFC (surya). Uno de los mejor documentados en esta gama.",
+      "validado_laboratorio": false,
+      "advertencia": "Verificar que sea la variante SDM732G y no SDM860 (POCO X3 Pro). Son chipsets distintos.",
+      "referencias": [
+        "https://github.com/bkerler/edl",
+        "https://xdaforums.com/t/poco-x3-nfc-edl"
+      ],
+      "notas_region": "POCO X3 NFC muy popular en Argentina 2021-2022 por relacion precio/rendimiento."
+    },
+    {
+      "chipset": "SDM480",
+      "marketing": "Snapdragon 480 / 480+",
+      "arquitectura": "ARM Kryo 460 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G50, G51 5G)",
+        "Nokia G300",
+        "OPPO A74 5G"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Android 11+ con protecciones adicionales de Keystore.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB (EDL presente pero programmer no publico para la mayoria)",
+      "programmer_publico": false,
+      "notas_programmer": "No se conocen programmers publicos para los modelos comerciales con SDM480 al momento de esta version.",
+      "validado_laboratorio": false,
+      "advertencia": "Chipset 5G moderno. EDL tecnicamente accesible pero sin programmer publico disponible. Sin herramienta propietaria el techo real es LOGICA.",
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Moto G50 comun en planes de operadoras argentinas 2022-2023."
+    },
+    {
+      "chipset": "SDM720G",
+      "marketing": "Snapdragon 720G",
+      "arquitectura": "ARM Kryo 465 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 9 Pro, Mi 10i)",
+        "Samsung (A52 variante)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen fisica posible con programmer disponible. Datos cifrados sin AFU.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible y documentado para Redmi Note 9 Pro (joyeuse). Amplia comunidad de soporte.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Redmi Note 9 Pro muy popular en Argentina 2020-2021."
+    },
+    {
+      "chipset": "SDM710",
+      "marketing": "Snapdragon 710",
+      "arquitectura": "ARM Kryo 360 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Mi 8 SE)",
+        "OnePlus 6T variante",
+        "Nokia 8.1",
+        "OPPO R17"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. FDE en Android 8.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point segun modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Xiaomi. Nokia y OPPO verificar por modelo.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM675",
+      "marketing": "Snapdragon 675",
+      "arquitectura": "ARM Kryo 460 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 7 Pro variante)",
+        "Samsung (M30)",
+        "OPPO A91"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Xiaomi. Samsung M30 verificar.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SM8150",
+      "marketing": "Snapdragon 855 / 855+",
+      "arquitectura": "ARM Kryo 485 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S10 Snapdragon)",
+        "Xiaomi (Mi 9)",
+        "OnePlus 7/7T",
+        "ASUS ROG Phone 2"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE fuerte. Imagen fisica posible en modelos sin Knox. Datos cifrados sin AFU.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para OnePlus 7/7T y algunos Xiaomi. Samsung S10 con Knox sin ruta publica efectiva.",
+      "validado_laboratorio": false,
+      "advertencia": "Samsung S10 Snapdragon con Knox: sin ruta publica efectiva aunque el chipset sea accesible. OnePlus y Xiaomi mejor documentados.",
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "OnePlus 7T todavia en circulacion en casos. Mi 9 menos frecuente."
+    },
+    {
+      "chipset": "MSM8917",
+      "marketing": "Snapdragon 425",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto E5)",
+        "Samsung (J3 2017)",
+        "Nokia 2"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Android 6 sin cifrado en muchos modelos.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible para Motorola E5 y otros modelos principales.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "ro.board.platform reporta msm8917. Motorola E5 referenciado con este chipset."
+    },
+    {
+      "chipset": "SDM678",
+      "marketing": "Snapdragon 678",
+      "arquitectura": "ARM Kryo 460 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 10)",
+        "OPPO A94"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Chipset moderno sin programmer publico conocido.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "No se conocen programmers publicos para modelos comerciales con SDM678.",
+      "validado_laboratorio": false,
+      "advertencia": "Sin programmer publico disponible. Techo real LOGICA sin herramienta propietaria."
+    },
+    {
+      "chipset": "SDM429",
+      "marketing": "Snapdragon 429",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Nokia (3.2, 2.3)",
+        "Samsung (A01)",
+        "Alcatel 3X"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. FDE en Android 8.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Perfil muy similar al SDM439. Programmer disponible para algunos modelos Nokia. Verificar por modelo exacto.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Nokia 3.2 comun en planes de operadoras argentinas."
+    },
+    {
+      "chipset": "SDM860",
+      "marketing": "Snapdragon 860",
+      "arquitectura": "ARM Kryo 485 64-bit",
+      "años": "2021-2022",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (POCO X3 Pro)",
+        "Xiaomi (Mi 10T Lite variante)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen fisica posible con programmer disponible.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + Vol arriba + USB (combinacion especifica POCO)",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible para POCO X3 Pro (vayu). Distinto al SDM732G del X3 NFC.",
+      "validado_laboratorio": false,
+      "advertencia": "CRITICO: SDM860 (POCO X3 Pro / vayu) es completamente distinto al SDM732G (POCO X3 NFC / surya). Verificar modelo exacto antes de seleccionar programmer.",
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "POCO X3 Pro muy popular en Argentina por su relacion precio/rendimiento."
+    },
+    {
+      "chipset": "SDM695",
+      "marketing": "Snapdragon 695 5G",
+      "arquitectura": "ARM Kryo 660 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Motorola (Moto G82)",
+        "Nokia G60",
+        "Redmi Note 11 Pro 5G"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Chipset 5G moderno.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico conocido para modelos comerciales con SDM695.",
+      "validado_laboratorio": false,
+      "advertencia": "Chipset 5G moderno. Sin programmer publico. Techo real LOGICA sin herramienta propietaria."
+    },
+    {
+      "chipset": "SDM680",
+      "marketing": "Snapdragon 680",
+      "arquitectura": "ARM Kryo 265 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 11)",
+        "OPPO A96",
+        "Realme 9"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox en modelos 2022+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico conocido para modelos comerciales.",
+      "validado_laboratorio": false,
+      "advertencia": "Chipset moderno muy comun en gama media 2022. Sin ruta fisica publica."
+    },
+    {
+      "chipset": "MSM8953P",
+      "marketing": "Snapdragon 626",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 4X)",
+        "Motorola (Moto G5s Plus)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Variante del MSM8953.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Disponible para Redmi Note 4X (nikel) y Moto G5s Plus. Bien documentado.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Redmi Note 4X muy comun en Argentina 2017-2019."
+    },
+    {
+      "chipset": "SDM712",
+      "marketing": "Snapdragon 712",
+      "arquitectura": "ARM Kryo 360 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "OPPO Reno2 F",
+        "Xiaomi (Mi 9 SE variante)",
+        "ASUS ZenFone 6"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para ASUS ZenFone 6 y algunos modelos OPPO.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SM7125",
+      "marketing": "Snapdragon 720G",
+      "arquitectura": "ARM Kryo 465 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi Note 9 Pro Max)",
+        "Samsung (A52s variante)",
+        "OPPO A93"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Mismo nivel que SDM720G.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer disponible. Mismo ecosistema que SDM720G (sm7150).",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "ro.board.platform puede reportar sm7125. Verificar contra sm7150."
+    },
+    {
+      "chipset": "MSM8956",
+      "marketing": "Snapdragon 650",
+      "arquitectura": "ARM Cortex-A72 + A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Redmi 3S/3X)",
+        "ZTE",
+        "Lenovo"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7. Android 6 sin cifrado en muchos modelos.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible para Xiaomi Redmi 3S.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8976",
+      "marketing": "Snapdragon 652",
+      "arquitectura": "ARM Cortex-A72 + A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A9 2016)",
+        "Xiaomi (Mi Max)",
+        "Lenovo"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible en Android 7.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Xiaomi.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM450V2",
+      "marketing": "Snapdragon 450 (variante 2019)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A20e)",
+        "Motorola (E6 Plus)",
+        "Nokia (5.3)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Verificar por modelo especifico. Nokia 5.3 con programmer parcial disponible.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM630",
+      "marketing": "Snapdragon 630",
+      "arquitectura": "ARM Kryo 260 64-bit",
+      "años": "2017-2020",
+      "android_tipico": [
+        "7.1",
+        "8.0",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Sony (Xperia XA2)",
+        "Nokia (6.1)",
+        "Motorola (Moto X4)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. FDE en Android 7-8.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point segun modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para Sony Xperia XA2 y Nokia 6.1. Motorola Moto X4 verificar.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Sony Xperia XA2 presente en causas de gama media."
+    },
+    {
+      "chipset": "MSM8952",
+      "marketing": "Snapdragon 617",
+      "arquitectura": "ARM Cortex-A72 + A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Mi 5S Plus)",
+        "Samsung (A9 Pro 2016)",
+        "HTC One A9"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible en Android 7. Android 5-6 generalmente sin cifrado.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos Xiaomi. Verificar por modelo exacto.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "ro.board.platform reporta msm8952. No confundir con MSM8956 (Snapdragon 650)."
+    },
+    {
+      "chipset": "SDM670",
+      "marketing": "Snapdragon 670",
+      "arquitectura": "ARM Kryo 360 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "OPPO R17",
+        "OnePlus 6T variante",
+        "Nokia 8.1 variante"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para algunos modelos OPPO. Verificar por modelo.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM730",
+      "marketing": "Snapdragon 730",
+      "arquitectura": "ARM Kryo 470 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Mi 9T)",
+        "Samsung (A70s variante)",
+        "Nokia 8.3 variante"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen fisica posible con programmer.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible para Xiaomi Mi 9T (davinci).",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Mi 9T presente en la region."
+    },
+    {
+      "chipset": "SDM730G",
+      "marketing": "Snapdragon 730G",
+      "arquitectura": "ARM Kryo 470 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi (Mi 9T Pro)",
+        "Redmi K20 Pro",
+        "POCO F2 Pro variante"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer publico disponible para modelos Xiaomi con SDM730G.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8930",
+      "marketing": "Snapdragon 400 (MSM8930)",
+      "arquitectura": "ARM Cortex-A5 32-bit",
+      "años": "2012-2015",
+      "android_tipico": [
+        "4.0",
+        "4.1",
+        "4.4"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (Galaxy Win)",
+        "HTC Desire 500",
+        "varios"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4.x sin cifrado por defecto.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Algunos programmers disponibles. Equipo muy antiguo.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Aparece en causas historicas 2014-2017."
+    },
+    {
+      "chipset": "MSM8960",
+      "marketing": "Snapdragon S4 Pro",
+      "arquitectura": "ARM Krait 28nm 32-bit",
+      "años": "2012-2014",
+      "android_tipico": [
+        "4.0",
+        "4.1",
+        "4.2",
+        "4.4"
+      ],
+      "fabricantes_comunes": [
+        "HTC One X",
+        "Samsung Galaxy S3 (variante EEUU)",
+        "Nokia Lumia 920"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4.x sin cifrado activo en casi todos los modelos.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Algunos programmers disponibles. Equipo muy antiguo.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SDM205",
+      "marketing": "Snapdragon 215",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2019-2022",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Nokia (2.3, 1.4)",
+        "Alcatel 1SE",
+        "tcl"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para Nokia 2.3. Otros modelos verificar.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Nokia 1.4 y 2.3 presentes en planes prepago argentinos."
+    },
+    {
+      "chipset": "SDM690",
+      "marketing": "Snapdragon 690 5G",
+      "arquitectura": "ARM Kryo 560 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Nokia G50",
+        "Samsung A42 5G (variante Qualcomm)"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "5G moderno. FBE con Strongbox.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico conocido.",
+      "validado_laboratorio": false,
+      "advertencia": "Chipset 5G moderno. Sin ruta fisica publica."
+    },
+    {
+      "chipset": "SDM750G",
+      "marketing": "Snapdragon 750G",
+      "arquitectura": "ARM Kryo 570 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung A52 5G (Qualcomm)",
+        "Xiaomi Mi 10T Lite"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "5G moderno. Sin programmer publico.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico conocido.",
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta fisica publica."
+    },
+    {
+      "chipset": "SDM765G",
+      "marketing": "Snapdragon 765G",
+      "arquitectura": "ARM Kryo 475 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "OnePlus 8T",
+        "Google Pixel 5",
+        "Samsung A52 5G variante"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "5G gama media-alta. Sin programmer publico general.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point o Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico conocido para modelos comerciales.",
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta fisica publica sin herramienta propietaria."
+    },
+    {
+      "chipset": "SDM778G",
+      "marketing": "Snapdragon 778G",
+      "arquitectura": "ARM Kryo 670 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Samsung A52s",
+        "Xiaomi Mi 11 Lite 5G NE",
+        "Motorola Edge 20"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "5G gama media-alta. Sin programmer publico.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico conocido.",
+      "validado_laboratorio": false,
+      "advertencia": "Chipset moderno 5G. Sin ruta fisica publica.",
+      "notas_region": "Samsung A52s muy popular en la region 2022-2023."
+    },
+    {
+      "chipset": "SM8250",
+      "marketing": "Snapdragon 865",
+      "arquitectura": "ARM Kryo 585 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung S20 (Qualcomm)",
+        "Xiaomi Mi 10",
+        "OnePlus 8/8T",
+        "ASUS ROG Phone 3"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Flagship 2020. FBE con Strongbox.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico disponible para modelos comerciales.",
+      "validado_laboratorio": false,
+      "advertencia": "Flagship moderno. Sin ruta fisica publica sin herramienta propietaria."
+    },
+    {
+      "chipset": "SM8350",
+      "marketing": "Snapdragon 888",
+      "arquitectura": "ARM Kryo 680 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Samsung S21 (Qualcomm)",
+        "Xiaomi Mi 11",
+        "OnePlus 9"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Flagship 2021. FBE con Strongbox fuerte.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point especifico",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer publico para modelos comerciales.",
+      "validado_laboratorio": false,
+      "advertencia": "Flagship 2021. Sin ruta fisica publica."
+    },
+    {
+      "chipset": "APQ8064T",
+      "marketing": "Snapdragon 600",
+      "arquitectura": "ARM Krait 300 32-bit",
+      "años": "2013-2015",
+      "android_tipico": [
+        "4.2",
+        "4.4",
+        "5.0"
+      ],
+      "fabricantes_comunes": [
+        "HTC (One M7)",
+        "Samsung (Galaxy S4 variante)",
+        "LG"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 4.x sin cifrado por defecto.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point específico por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para HTC One M7 y algunos modelos. Equipo muy antiguo.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "HTC One M7 todavía en circulación en causas históricas."
+    },
+    {
+      "chipset": "MSM8994",
+      "marketing": "Snapdragon 810",
+      "arquitectura": "ARM Cortex-A57 + A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.0",
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "HTC (One M9)",
+        "LG G Flex 2",
+        "Sony Xperia Z3+"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible en Android 6+.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB, o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para HTC One M9. Otros modelos verificar.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "MSM8998",
+      "marketing": "Snapdragon 835",
+      "arquitectura": "ARM Kryo 280 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "HTC U11",
+        "Samsung Galaxy S8 (Qualcomm)",
+        "OnePlus 5",
+        "Sony XZ Premium"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. FDE en Android 7-8.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Test point específico por modelo",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Disponible para HTC U11 y OnePlus 5. Samsung S8 Qualcomm con Knox sin ruta efectiva.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "advertencia": "Samsung S8 variante Qualcomm (SDM835): Knox activo, sin ruta física pública efectiva aunque el chipset sea accesible."
+    },
+    {
+      "chipset": "SDM870",
+      "marketing": "Snapdragon 870",
+      "arquitectura": "ARM Kryo 585 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "POCO F3",
+        "OnePlus 9R",
+        "Motorola Edge 20 Pro",
+        "iQOO 7"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Imagen física posible con programmer disponible.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + Vol arriba + USB (combinación específica POCO)",
+      "programmer_publico": true,
+      "notas_programmer": "Programmer público disponible para POCO F3 (alioth). Bien documentado por la comunidad.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "POCO F3 muy popular en Argentina 2021-2022 por relación precio/rendimiento."
+    },
+    {
+      "chipset": "MSM8953AA",
+      "marketing": "Snapdragon 625 (variante BlackBerry)",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.1",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "BlackBerry KEYone (TCL)",
+        "BlackBerry Motion (TCL)"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE activo. Android 7-8. Con PIN conocido descifrable.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + Vol arriba + USB (combinación específica BlackBerry/TCL)",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Programmer disponible para KEYone (BBB100). Aparece en causas corporativas y de funcionarios.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "BlackBerry KEYone frecuente en causas de alto perfil (funcionarios, abogados, empresas)."
+    },
+    {
+      "chipset": "SDM720",
+      "marketing": "Snapdragon 720",
+      "arquitectura": "ARM Kryo 465 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Meizu (17 Pro variante)",
+        "varios"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Similar a SDM720G.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Verificar por modelo específico.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ]
+    },
+    {
+      "chipset": "SM8475",
+      "marketing": "Snapdragon 8+ Gen 1",
+      "arquitectura": "ARM Cortex-X2 + A710 + A510 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "OnePlus 10T",
+        "POCO F4 GT",
+        "Realme GT 2 Pro",
+        "iQOO 9T"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Flagship 2022. FBE con Strongbox.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Combinación específica por modelo",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer público general para modelos comerciales.",
+      "validado_laboratorio": false,
+      "advertencia": "Flagship moderno. Sin ruta física pública sin herramienta propietaria."
+    },
+    {
+      "chipset": "SM8475P",
+      "marketing": "Snapdragon 8+ Gen 1 (variante Pro)",
+      "arquitectura": "ARM Cortex-X2 + A710 + A510 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "OnePlus 11R (variante)"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Mismo perfil que SM8475.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Combinación específica por modelo",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer público.",
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta física pública."
+    },
+    {
+      "chipset": "SM6225",
+      "marketing": "Snapdragon 680",
+      "arquitectura": "ARM Kryo 265 64-bit (6nm)",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "Samsung Galaxy A23",
+        "Realme narzo 50",
+        "OPPO A76/A96",
+        "vivo T1",
+        "Xiaomi Redmi 10C"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Moderno. Sin programmer público conocido.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer público general para modelos comerciales. Techo lógico en la práctica.",
+      "validado_laboratorio": false,
+      "referencias": [
+        "https://github.com/bkerler/edl"
+      ],
+      "notas_region": "Muy común en gama media baja 2022-2023 de múltiples marcas. Sin ruta física pública."
+    },
+    {
+      "chipset": "SM4350",
+      "marketing": "Snapdragon 4 Gen 1",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Xiaomi Redmi A2",
+        "Nokia G42",
+        "TCL 40 SE",
+        "vivo Y16 5G"
+      ],
+      "edl_accesible": true,
+      "acquisition_ceiling": "NO_DISPONIBLE",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Sin programmer público.",
+      "herramienta": "edl (Bjoern Kerler)",
+      "activacion_edl": "Vol abajo + USB",
+      "programmer_publico": false,
+      "notas_programmer": "Sin programmer público. Techo lógico.",
+      "validado_laboratorio": false,
+      "advertencia": "SM4350: chipset de nueva generación budget. Sin ruta física pública."
+    }
+  ],
+  "exynos": [
+    {
+      "chipset": "Exynos 7570",
+      "marketing": "Samsung Exynos 7570",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J4, J6)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox. Claves protegidas por TrustZone. Sin herramienta propietaria el techo es sistema de archivos.",
+      "herramienta": "ADB + Heimdall (Download Mode)",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "notas_heimdall": "Heimdall permite flashear pero no leer userdata directamente.",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta de adquisicion fisica publica. Acquisition ceiling = FS si ADB root disponible, LOGICA si no.",
+      "referencias": [
+        "https://gitlab.com/BenjaminDobell/Heimdall"
+      ]
+    },
+    {
+      "chipset": "Exynos 7580",
+      "marketing": "Samsung Exynos 7580",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J5, J7 2016)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7. Con PIN conocido y ADB root, datos accesibles.",
+      "herramienta": "ADB + Heimdall",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Mismo esquema que Exynos 7570. Sin ruta fisica publica."
+    },
+    {
+      "chipset": "Exynos 7884",
+      "marketing": "Samsung Exynos 7884 / 7884B",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.0",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J6+, A20, A30)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox. Sin ruta fisica publica.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Samsung con Knox: sin ruta fisica publica. Techo FS si ADB root disponible.",
+      "notas_region": "Samsung J6+ y A20 muy comunes en Argentina."
+    },
+    {
+      "chipset": "Exynos 7904",
+      "marketing": "Samsung Exynos 7904",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A30, A30s, A50)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox TEE.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta fisica publica. Mismo esquema Knox que toda la serie A/J.",
+      "notas_region": "Samsung A30/A50 muy frecuentes en causas de la region."
+    },
+    {
+      "chipset": "Exynos 9610",
+      "marketing": "Samsung Exynos 9610",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A50, M40)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox fuerte.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox TrustZone activo. Techo FS sin herramienta comercial."
+    },
+    {
+      "chipset": "Exynos 850",
+      "marketing": "Samsung Exynos 850",
+      "arquitectura": "ARM Cortex-A55 64-bit",
+      "años": "2020-2023",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A21s, A03s, A13)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "LOGICA",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox. Android 12 con protecciones adicionales.",
+      "herramienta": "ADB (logico solamente)",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Generacion moderna de Exynos. Sin ruta a datos de usuario sin herramienta propietaria.",
+      "notas_region": "Samsung A13 y A21s muy vendidos en la region actualmente."
+    },
+    {
+      "chipset": "Exynos 7870",
+      "marketing": "Samsung Exynos 7870",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2019",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (J6, J7 2016, A6)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Knox activo.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Sin ruta fisica publica. Techo FS si ADB root.",
+      "notas_region": "Samsung J6 y J7 2016 muy comunes en la region."
+    },
+    {
+      "chipset": "Exynos 7885",
+      "marketing": "Samsung Exynos 7885",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.0",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A6+, A8 2018, J6+)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox TrustZone.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta fisica publica. Mismo esquema Knox.",
+      "notas_region": "ro.board.platform reporta exynos7885. J6+ y A8 comunes."
+    },
+    {
+      "chipset": "Exynos 7420",
+      "marketing": "Samsung Exynos 7420",
+      "arquitectura": "ARM Cortex-A57 + A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.0",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S6, S6 Edge, Note 5)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible. Knox activo desde S6.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Sin ruta fisica publica aunque el equipo sea de 2015.",
+      "notas_region": "Samsung S6 todavia en circulacion en casos."
+    },
+    {
+      "chipset": "Exynos 8890",
+      "marketing": "Samsung Exynos 8890",
+      "arquitectura": "Samsung M1 + Cortex-A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S7, Note 7, S7 Edge)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Knox fuerte.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Samsung S7 con Knox. Sin ruta fisica publica.",
+      "notas_region": "Samsung S7 todavia frecuente en causas de la region."
+    },
+    {
+      "chipset": "Exynos 9611",
+      "marketing": "Samsung Exynos 9611",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2019-2022",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (M21, M31, A51 variante, M30s)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox TrustZone. Claves protegidas. Mismo esquema que Exynos 9610.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin ruta fisica publica. Knox activo. Techo FS si ADB root disponible.",
+      "notas_region": "Samsung M21 y M31 muy frecuentes en la region 2020-2022.",
+      "referencias": [
+        "https://gitlab.com/BenjaminDobell/Heimdall"
+      ]
+    },
+    {
+      "chipset": "Exynos 990",
+      "marketing": "Samsung Exynos 990",
+      "arquitectura": "Samsung Mongoose M5 + Cortex-A55 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S20, S20+, Note 20)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox y Knox fuerte. Sin ruta fisica publica.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Flagship Samsung con Knox maximo. Sin ninguna ruta de adquisicion fisica publica.",
+      "notas_region": "Samsung S20 todavia en circulacion en causas de mayor valor economico."
+    },
+    {
+      "chipset": "Exynos 9825",
+      "marketing": "Samsung Exynos 9825",
+      "arquitectura": "Samsung Mongoose M4 + Cortex-A55 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (Note 10, Note 10+)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Knox fuerte. Sin ruta fisica publica.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox maximo. Sin ruta fisica publica.",
+      "notas_region": "Samsung Note 10 frecuente en causas de robos de alta gama."
+    },
+    {
+      "chipset": "Exynos 1280",
+      "marketing": "Samsung Exynos 1280",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A53, A33, A23 5G)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "LOGICA",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox y Knox maximo. Android 12+ con protecciones adicionales.",
+      "herramienta": "ADB (logico solamente)",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Generacion moderna de Exynos con Knox maximo. Sin ninguna ruta de acceso a datos de usuario sin herramienta propietaria.",
+      "notas_region": "Samsung A53 y A33 muy vendidos actualmente en la region."
+    },
+    {
+      "chipset": "Exynos 1080",
+      "marketing": "Samsung Exynos 1080",
+      "arquitectura": "ARM Cortex-A78 + A55 64-bit",
+      "años": "2021-2022",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A52 variante, F62)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Knox fuerte.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Sin ruta fisica publica. Techo FS si ADB root.",
+      "notas_region": "Samsung A52 muy popular en la region 2021-2022."
+    },
+    {
+      "chipset": "Exynos 7872",
+      "marketing": "Samsung Exynos 7872",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.0",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A6+, M20, Galaxy A)",
+        "Meizu M6s"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. Knox activo.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Sin ruta fisica publica.",
+      "notas_region": "Samsung M20 comun en gama baja 2019."
+    },
+    {
+      "chipset": "Exynos 7880",
+      "marketing": "Samsung Exynos 7880",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (A5 2017, A7 2017)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 7+. Knox activo.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Sin ruta fisica publica.",
+      "notas_region": "Samsung A5 2017 y A7 2017 todavia en circulacion en causas."
+    },
+    {
+      "chipset": "Exynos 7420OC",
+      "marketing": "Samsung Exynos 7420 (Note5)",
+      "arquitectura": "ARM Cortex-A57 + A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (Note 5, S6 Edge+)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible. Knox activo desde esta generacion.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Mismo esquema que Exynos 7420."
+    },
+    {
+      "chipset": "Exynos 8895",
+      "marketing": "Samsung Exynos 8895",
+      "arquitectura": "Samsung M2 + Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S8, S8+, Note 8)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox fuerte desde S8.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Samsung S8/Note 8 con Knox. Sin ruta fisica publica.",
+      "notas_region": "Samsung S8 frecuente en causas de robos de alta gama."
+    },
+    {
+      "chipset": "Exynos 9810",
+      "marketing": "Samsung Exynos 9810",
+      "arquitectura": "Samsung M3 + Cortex-A55 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "8.0",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S9, S9+, Note 9)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox fuerte.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox fuerte. Sin ruta fisica publica.",
+      "notas_region": "Samsung S9 y Note 9 frecuentes en causas de robos de alta gama."
+    },
+    {
+      "chipset": "Exynos 9820",
+      "marketing": "Samsung Exynos 9820",
+      "arquitectura": "Samsung M4 + Cortex-A75 + A55 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S10, S10+, Note 10 variante)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con Knox fuerte.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox fuerte. Sin ruta fisica publica.",
+      "notas_region": "Samsung S10 frecuente en causas de alta gama."
+    },
+    {
+      "chipset": "Exynos 2100",
+      "marketing": "Samsung Exynos 2100",
+      "arquitectura": "ARM Cortex-X1 + A78 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S21, S21+, S21 Ultra)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox y Knox maximo.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox maximo. Sin ninguna ruta de adquisicion fisica publica."
+    },
+    {
+      "chipset": "Exynos 2200",
+      "marketing": "Samsung Exynos 2200",
+      "arquitectura": "ARM Cortex-X2 + A710 + A510 64-bit",
+      "años": "2022-2024",
+      "android_tipico": [
+        "12",
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (S22, S22+, S22 Ultra)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Strongbox y Knox maximo.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox maximo. Sin ruta fisica publica."
+    },
+    {
+      "chipset": "Exynos 7578",
+      "marketing": "Samsung Exynos 7578",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Samsung (Galaxy A2 Core, M01)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE. Android Go. Knox activo.",
+      "herramienta": "ADB + Heimdall",
+      "activacion_download": "Vol abajo + Vol arriba + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Knox activo. Sin ruta fisica publica."
+    }
+  ],
+  "kirin": [
+    {
+      "chipset": "Kirin 659",
+      "marketing": "HiSilicon Kirin 659",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "7.0",
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (P Smart 2018, Y7 2018)",
+        "Honor (7X, 9 Lite)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE en Android 8. Sin herramienta publica equivalente a MTKClient o EDL para Kirin.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB (Huawei Download Mode)",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "HiSilicon no tiene herramienta publica equivalente a EDL/BROM. Techo FS si depuracion USB activa. Post-2019 sin servicios Google.",
+      "notas_region": "Huawei P Smart 2018 muy comun en Argentina. Y7 tambien frecuente."
+    },
+    {
+      "chipset": "Kirin 710",
+      "marketing": "HiSilicon Kirin 710 / 710F",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2018-2021",
+      "android_tipico": [
+        "8.1",
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (P Smart 2019, Y8p)",
+        "Honor (10 Lite, 20 Lite)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE en Android 9+. Sin herramienta publica de bajo nivel para Kirin.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin equivalente publico a EDL para chipsets HiSilicon. Techo FS. Modelos post-2019 sin servicios Google complican la extraccion logica.",
+      "notas_region": "Huawei P Smart 2019 y Honor 10 Lite muy comunes en la region."
+    },
+    {
+      "chipset": "Kirin 970",
+      "marketing": "HiSilicon Kirin 970",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2017-2019",
+      "android_tipico": [
+        "8.0",
+        "9.0"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Mate 10, P20)",
+        "Honor (Play, View 10)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE de Huawei. Sin herramienta publica de bajo nivel.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Flagship Huawei 2017-2018. Sin ruta fisica publica. Techo FS.",
+      "notas_region": "Huawei Mate 10 y P20 en circulacion en causas de gama media-alta."
+    },
+    {
+      "chipset": "Kirin 810",
+      "marketing": "HiSilicon Kirin 810",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2019-2021",
+      "android_tipico": [
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Nova 5T)",
+        "Honor (9X)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE de Huawei. Sin herramienta publica equivalente a EDL.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin equivalente publico a EDL para Kirin. Techo FS. Post-2020 sin servicios Google complica extraccion logica.",
+      "notas_region": "Honor 9X presente en la region."
+    },
+    {
+      "chipset": "Kirin 985",
+      "marketing": "HiSilicon Kirin 985",
+      "arquitectura": "ARM Cortex-A77 + A55 64-bit",
+      "años": "2020-2021",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (P40 Lite 5G)",
+        "Honor 30"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE. Sin servicios Google en modelos post-2020.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin herramienta publica de bajo nivel para Kirin. Techo FS."
+    },
+    {
+      "chipset": "Kirin 710A",
+      "marketing": "HiSilicon Kirin 710A",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Y7a)",
+        "Honor (Play 4T)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE. Variante del Kirin 710 fabricada en SMIC.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin equivalente publico a EDL. Techo FS.",
+      "notas_region": "Huawei Y7a presente en la region post-2020."
+    },
+    {
+      "chipset": "Kirin 650",
+      "marketing": "HiSilicon Kirin 650",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "6.0",
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (P9 Lite)",
+        "Honor (8, 5C)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE disponible. Sin herramienta publica de bajo nivel.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin equivalente publico a EDL para Kirin. Techo FS.",
+      "notas_region": "Huawei P9 Lite muy comun en Argentina 2016-2018."
+    },
+    {
+      "chipset": "Kirin 960",
+      "marketing": "HiSilicon Kirin 960",
+      "arquitectura": "ARM Cortex-A73 + A53 64-bit",
+      "años": "2016-2018",
+      "android_tipico": [
+        "7.0",
+        "8.0"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Mate 9, P10)",
+        "Honor (8 Pro)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FDE",
+      "notas_cifrado": "FDE. Sin herramienta publica de bajo nivel para Kirin.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin equivalente publico a EDL. Techo FS."
+    },
+    {
+      "chipset": "Kirin 620",
+      "marketing": "HiSilicon Kirin 620",
+      "arquitectura": "ARM Cortex-A53 64-bit",
+      "años": "2015-2017",
+      "android_tipico": [
+        "5.1",
+        "6.0",
+        "7.0"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Honor 5X, Y6 Pro)",
+        "Huawei P8 Lite"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "NINGUNO",
+      "notas_cifrado": "Android 5-6 sin cifrado por defecto en muchos modelos. Sin herramienta publica de bajo nivel.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin equivalente publico a EDL para Kirin. Android 5-6 sin cifrado es una ventaja pero no hay bypass BROM/EDL.",
+      "notas_region": "Huawei Honor 5X y P8 Lite muy comunes en Argentina 2016-2018."
+    },
+    {
+      "chipset": "Kirin 820",
+      "marketing": "HiSilicon Kirin 820",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2020-2022",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Nova 7 SE)",
+        "Honor 30 Lite"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE. Post-2020 sin GMS en la mayoria de modelos.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin GMS post-2020 complica extraccion logica. Sin herramienta publica de bajo nivel."
+    },
+    {
+      "chipset": "Kirin 980",
+      "marketing": "HiSilicon Kirin 980",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2018-2020",
+      "android_tipico": [
+        "9.0",
+        "10"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Mate 20, P30 Pro)",
+        "Honor View 20"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE con TEE de Huawei. Sin herramienta publica de bajo nivel.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Flagship Huawei 2018. Sin equivalente publico a EDL. Techo FS.",
+      "notas_region": "Huawei Mate 20 y P30 Pro en circulacion en causas de alta gama."
+    },
+    {
+      "chipset": "Kirin 990",
+      "marketing": "HiSilicon Kirin 990",
+      "arquitectura": "ARM Cortex-A76 + A55 64-bit",
+      "años": "2020-2021",
+      "android_tipico": [
+        "10",
+        "11"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (P40, P40 Pro)",
+        "Mate 30 Pro 5G"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE fuerte. Ultimo Kirin con GMS parcial.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin GMS completo desde 2020. Sin herramienta publica de bajo nivel."
+    },
+    {
+      "chipset": "Kirin 9000",
+      "marketing": "HiSilicon Kirin 9000",
+      "arquitectura": "ARM Cortex-X1 + A77 + A55 64-bit",
+      "años": "2021-2022",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Huawei (Mate 40 Pro)"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "Ultimo Kirin pre-sancion TSMC. FBE fuerte. Sin GMS.",
+      "herramienta": "ADB (si depuracion activa)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Sin GMS. Sin herramienta publica de bajo nivel para Kirin. Techo FS."
+    }
+  ],
+  "google_tensor": [
+    {
+      "chipset": "GS101",
+      "marketing": "Google Tensor G1",
+      "arquitectura": "ARM Cortex-X1 + A76 + A55 64-bit (Samsung 5nm)",
+      "años": "2021-2023",
+      "android_tipico": [
+        "12",
+        "13"
+      ],
+      "fabricantes_comunes": [
+        "Google Pixel 6",
+        "Pixel 6 Pro",
+        "Pixel 6a"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Titan M2 (chip de seguridad dedicado). Claves protegidas por hardware. Sin EDL estándar.",
+      "herramienta": "ADB (si depuración activa + bootloader desbloqueado)",
+      "activacion_download": "Combinación específica Pixel (Vol abajo + USB)",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Tensor G1: sin EDL equivalente a Qualcomm/MediaTek. Titan M2 protege claves. Techo FS si bootloader desbloqueado y AFU confirmado.",
+      "notas_region": "Pixel 6a importado paralelo presente en Argentina."
+    },
+    {
+      "chipset": "GS201",
+      "marketing": "Google Tensor G2",
+      "arquitectura": "ARM Cortex-X1 + A78 + A55 64-bit (Samsung 4nm)",
+      "años": "2022-2024",
+      "android_tipico": [
+        "13",
+        "14"
+      ],
+      "fabricantes_comunes": [
+        "Google Pixel 7",
+        "Pixel 7 Pro",
+        "Pixel 7a"
+      ],
+      "edl_accesible": false,
+      "brom_accesible": false,
+      "acquisition_ceiling": "FS",
+      "cifrado_tipico": "FBE_FUERTE",
+      "notas_cifrado": "FBE con Titan M2 mejorado. Sin EDL estándar. Mismo esquema que GS101.",
+      "herramienta": "ADB (si depuración activa + bootloader desbloqueado)",
+      "activacion_download": "Vol abajo + USB",
+      "programmer_publico": false,
+      "validado_laboratorio": false,
+      "advertencia": "Tensor G2: mayor seguridad que G1. Sin ruta física pública. Techo FS."
+    }
+  ],
+  "unisoc": [
+    {
+      "chipset": "UNISOC T618",
+      "marketing": "UNISOC Tiger T618",
+      "arquitectura": "ARM Cortex-A75 + A55 64-bit",
+      "años": "2020-2023",
+      "android_tipico": [
+        "10",
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung Galaxy Tab A8",
+        "TCL Tab 10s",
+        "Blackview Tab 7"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. UNISOC tiene un modo de descarga propio (BROM-like) pero herramientas públicas limitadas.",
+      "herramienta": "SPFlashTool / UNISOC Research Download Tool",
+      "activacion_edl": "Combinación específica por modelo o test point",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "SPFlashTool soporta UNISOC. Menos documentado que MTKClient. Communidad en desarrollo.",
+      "validado_laboratorio": false,
+      "advertencia": "UNISOC: ecosistema de herramientas menos maduro que MediaTek. Verificar soporte en SPFlashTool antes de intentar.",
+      "notas_region": "Samsung Galaxy Tab A8 muy común en Argentina. Único chipset UNISOC relevante."
+    },
+    {
+      "chipset": "UNISOC T606",
+      "marketing": "UNISOC Tiger T606",
+      "arquitectura": "ARM Cortex-A75 + A55 64-bit",
+      "años": "2021-2023",
+      "android_tipico": [
+        "11",
+        "12"
+      ],
+      "fabricantes_comunes": [
+        "Samsung Galaxy Tab A7 Lite",
+        "Tecno Pova 3"
+      ],
+      "edl_accesible": "CONDICIONAL",
+      "acquisition_ceiling": "FISICA",
+      "cifrado_tipico": "FBE",
+      "notas_cifrado": "FBE activo. Mismo ecosistema UNISOC que T618.",
+      "herramienta": "SPFlashTool",
+      "activacion_edl": "Test point o combinación específica",
+      "programmer_publico": "PARCIAL",
+      "notas_programmer": "Soporte en desarrollo. Menos madurez que MediaTek.",
+      "validado_laboratorio": false,
+      "advertencia": "UNISOC T606: soporte herramientas en desarrollo. Verificar antes de intentar."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+# EVIDEX BYPASS — .gitignore
+
+# Sesiones de análisis (datos de evidencia, nunca al repo)
+sessions/
+sessions/*.json
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+
+# Variables de entorno y configuración local
+.env
+.env.*
+config-local.json
+
+# Logs
+*.log
+*.log.*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Distribución / empaquetado
+dist/
+build/
+*.egg-info/
